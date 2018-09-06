@@ -1,0 +1,32 @@
+extends layout
+
+block content
+    // main content start
+    #page-wrapper
+        .main-page
+            .tables
+                h2.title1 Notifications :
+                    |
+                    |
+                    = size
+
+                .table-responsive.bs-example.widget-shadow
+                    // h4 Responsive Table:
+                    if size > 0
+                        table.table.table-bordered
+                            thead
+                                tr
+                                    th ID
+                                    th Date Created
+                                    th Image
+                                    th Message
+                            tbody
+                                each val, index in notifications
+                                    tr
+                                        td= index
+                                        td= val.createdAt
+                                        td
+                                            img(src=val.image, alt='', width='50px', height='50px')
+                                        td= val.message
+                    else
+                        h4.title1 No notifications found!

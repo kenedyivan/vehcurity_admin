@@ -1,0 +1,112 @@
+extends layout
+
+block content
+    #page-wrapper
+        .main-page
+            .col_3
+                .col-md-3.widget.widget1
+                    .r3_counter_box
+                        i.pull-left.fa.fa-exclamation-circle.icon-rounded
+                        .stats
+                            h5
+                                strong#num-requests
+                            span Requests
+                .col-md-3.widget.widget1
+                    .r3_counter_box
+                        i.pull-left.fa.fa-toggle-on.user1.icon-rounded
+                        .stats
+                            h5
+                                strong#num-online
+                            span Online
+                .col-md-3.widget.widget1
+                    .r3_counter_box
+                        i.pull-left.fa.fa-shield.user2.icon-rounded
+                        .stats
+                            h5
+                                strong#num-active-sessions
+                            span Active Guards
+                .col-md-3.widget.widget1
+                    .r3_counter_box
+                        i.pull-left.fa.fa-car.dollar1.icon-rounded
+                        .stats
+                            h5
+                                strong#num-owners
+                            span Total Owners
+                .col-md-3.widget
+                    .r3_counter_box
+                        i.pull-left.fa.fa-users.dollar2.icon-rounded
+                        .stats
+                            h5
+                                strong#num-guards
+                            span Total Guards
+                .clearfix
+
+                h2.title1
+                h2.title1 Processes
+                .elements
+                    // photoday-section
+                    .col-sm-4.wthree-crd.widgettable
+                        .card
+                            .card-body
+                                .agileinfo-cdr
+                                    .card-header
+                                        h3 Payments
+                                    hr.widget-separator
+                                    .widget-body
+                                        table.table.table-bordered
+                                            thead
+                                                tr
+                                                    th ID
+                                                    th Name
+                                                    th Amount
+                                            tbody
+                                                tr
+                                                    td #24436
+                                                    td Maecenas molestie
+                                                    td $2,100.00
+                                                tr
+                                                    td #2118
+                                                    td Vivamus molestie
+                                                    td $4,200.00
+                                                tr
+                                                    td #6668
+                                                    td Donec at auctor
+                                                    td $1,900.00
+                                                tr
+                                                    td #8446
+                                                    td Nullam sollicitudin
+                                                    td $4,300.00
+                                                tr
+                                                    td #3279
+                                                    td Ullamcorper dictum
+                                                    td $3,600.00
+                    .col-sm-4.w3-agileits-crd.widgettable
+                        .card.card-contact-list
+                            .agileinfo-cdr
+                                .card-header
+                                    h3 Active guards
+                                hr.widget-separator
+                                .card-body.p-b-20
+                                    .list-group
+
+                    .col-sm-4.w3-agile-crd.widgettable
+                        .card
+                            .card-body.card-padding
+                                div
+                                    header.widget-header
+                                        h4.widget-title Guard sessions
+                                    hr.widget-separator
+                                    .widget-body
+                                        .streamline(data-tasks=len)
+                                            if len > 0
+                                                each val, index in tasks
+                                                    div(class="sl-item " + val.ink + "")
+                                                        .sl-content
+                                                            small.text-muted
+                                                                =val.created_at
+                                                            p
+                                                                =val.message
+                                            else
+                                                p No Tasks found!
+                    .clearfix
+                    // //photoday-section

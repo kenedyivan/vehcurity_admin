@@ -1,0 +1,31 @@
+extends layout
+
+block content
+    #page-wrapper
+        .main-page
+            .forms
+                h2.title1 Edit guard details
+                .form-grids.row.widget-shadow(data-example-id='basic-forms')
+                    .form-body
+                        form(method="post", action="/guards/update")
+                            .form-group
+                                label(for='exampleInputFullName') Full name
+                                input#exampleInputFullName.form-control(type='text', name="full_name", placeholder='Full name', value=guard.name)
+                            .form-group
+                                label(for='exampleInputEmail1') Email address
+                                input#exampleInputEmail1.form-control(type='email', name="email", placeholder='Email', value=guard.email)
+                            .form-group
+                                label(for='exampleInputPhone') Phone
+                                input#exampleInputPhone.form-control(type='isPhoneNumber', name="phone", placeholder='Phone', value=guard.phone)
+                            p.help-block Change user password.
+                            .form-group
+                                label(for='exampleInputPassword1') Old password
+                                input#exampleInputPassword1.form-control(type='password', name="password", placeholder='Old password')
+                            .form-group
+                                label(for='exampleInputNewPassword') New password
+                                input#exampleInputNewPassword.form-control(type='password', name="new_password", placeholder='New password')
+                            .form-group
+                                label(for='exampleInputConfirmPassword') Confirm new password
+                                input#exampleInputConfirmPassword.form-control(type='password', name="confirm_password" placeholder='Confirm password')
+                            button.btn.btn-default(type='submit') Save changes
+                            input(type='hidden', name="id", value=id)

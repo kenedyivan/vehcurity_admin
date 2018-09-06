@@ -1,0 +1,42 @@
+extends layout
+
+block content
+    // main content start
+    #page-wrapper
+        .main-page
+            .tables
+                h2.title1 Guards :
+                    |
+                    |
+                    = size
+                .col-md-12.button_set_one.three.agile_info_shadow
+                    a.btn.btn-primary.btn-flat.btn-pri(type='button', href="/guards/create")
+                        i.fa.fa-plus(aria-hidden='true')
+                        |  Add guard
+
+                .table-responsive.bs-example.widget-shadow
+                    // h4 Responsive Table:
+                    if size > 0
+                        table.table.table-bordered
+                            thead
+                                tr
+                                    th Picture
+                                    th Name
+                                    th Email
+                                    th Phone
+                                    th Actions
+                            tbody
+                                each val, index in guards
+                                    tr
+                                        td
+                                            img(src=val.avatar, alt='', width='50px', height='50px')
+                                        td= val.name
+                                        td= val.email
+                                        td= val.phone
+                                        td
+                                            a.btn.btn-warning(type='button', href='/guards/' + index + '/edit') Edit
+                                            |
+                                            |
+                                            a.btn.btn-danger(type='button', href='/guards/' + index + '/delete') Delete
+                    else
+                        h4.title1 No guards found!

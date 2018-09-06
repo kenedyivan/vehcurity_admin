@@ -1,0 +1,52 @@
+extends layout
+
+block content
+    script.
+        function al(){alert('Holla!');}
+
+    // main content start
+    #page-wrapper
+        .main-page
+            .tables
+                h2.title1 Guard sessions :
+                    |
+                    |
+                    = size
+
+                .table-responsive.bs-example.widget-shadow
+                    // h4 Responsive Table:
+                    if size > 0
+                        table.table.table-bordered
+                            thead
+                                tr
+                                    //th.limited-cell ID
+                                    //th.limited-cell Guard
+                                    //th.limited-cell Owner
+                                    th Start
+                                    th End
+                                    th Duration
+                                    th Cost (UGX)
+                                    th Counter
+                                    th Status
+                            tbody
+                                each val, index in sessions
+                                    tr
+                                        //td.limited-cell= index
+                                        //td.limited-cell= val.guard
+                                        //td.limited-cell= val.owner
+                                        td= val.start_time
+                                        td= val.end_time
+                                        td= val.duration
+                                        td= val.totalCost
+                                        td(id=index)
+                                            script.
+                                                countdownFormatted('#{index}','#{val.end_time}')
+                                        td
+                                            if val.status === '1'
+                                                .bg-success.light.pv20.text-white.fw600.text-center
+                                                    span(style="padding:10px;") Done
+                                            else
+                                                .bg-dark.light.pv20.text-white.fw600.text-center
+                                                    span(style="padding:10px;") Guarding
+                    else
+                        h4.title1 No guard sessions found!

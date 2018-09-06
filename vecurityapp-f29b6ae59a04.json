@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "vecurityapp",
+  "private_key_id": "f29b6ae59a040988abc523621f76d8b61a623b2f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDb6GuYH854Qj36\nlb3xG7swooaM9ZgwePShVBVi70pRvCx6COsf1xeFi2Gac7V/iOQrSg/EajzI0ln3\n82yJDuPVyQ9cwX+lwsdP1te62RM0XtrMPMLFmd9trtS8Vbh0gK9VbTdVyOPEBvrA\n7fSkEehxajTzE67X/qMwZfrNzv1gVG0hak2wXWLp+Se65lNOLSXh3ArXl5D6Ym0O\n2Zwc6vpjxmQPPfONtOok+EWG3g4+trjGnZrUkCi4fLWCkdeST+G4B8oSl/ekR45f\nC8pqWR2TfYs2coIsWGGI8TYTagD2K15Z0LR1ex5DcsC8pKI3POmzP9wzkFDBrHcP\nsAw/NaolAgMBAAECggEAKf/qGsAKYj/+j98tC4FZH0kPKxlV434adLx3KDHdDx7C\nHN2asHZXZPdRoRrT0YOO1nC68a+7o7w/GCLa+hNIsuJHZ5cCPuGkSOyWv7YpW5F5\nNtQs++nvOQbQ1RaHF+Mi+Y0WKjFnxN7zYckgtfxAmXaoHbvG4zRcLQhxHgEYNd8X\nWjCIwSPaLawpUi/Pofq61dFXFCCS5oewLGE+6JsHBF2LmPkZimaCMh2DMt+6+NdT\nG7TpM+abtF2nJtmqHAHo+IIBGLU8ygl9hDjuy+ZsucAzOdpfLgsu8nPWJb7Eaq4U\nG3xiN44g0oIkVj/skF3IOHzNMMoM/saAF2+tbc8IaQKBgQD06w+NeQIHtzjvzpot\nQxJPyqY2eb7oar3XQ5q7uy4eqK/W0EKWNvPJzbVSy0/Q0rBvpO0rs3m9ZiKKsDdU\nr834MAQ4PIFPrQd8pkAILLElIl5VuI7k0cgSLBh2toJN8Hkljz10Txvw9j3aHRoB\nvsBdh2BFQiMYRmlFZuuiM4TkiQKBgQDl26joDehRuRtyhybM/fD38FDqgIfirh2O\n3T2NKHoVTUwbjLfZrjAv4y22QwJt3MtJPQNyqpGT1Wzyj8i8eczOEfzWsNJ461Nn\n82TGQhHCSkDWrsOCLyk2utiaMEtq8Ct/9bxHiiXXMtA0qD0e1MBV/Kh7SMEYlDmW\nzxB4T8cpvQKBgEI02Ltxnq7fRLDutJbPrr+LFGtdddH2KONsDwP4kXsQNphnK9jX\negdvaDi9ZRIaIj/L4aESnzInzeaXxB1MeO1CbaGWGY6kQ4XamyyaiDh1lfKuNVJ9\nswvWh7Zvl8Hh453XntE2IWN97TJs837NRcsCsW+HdV02i3aLX9809hOhAoGBAL2y\nKJVKVP6M66/7BfSLZoDYXY8KgBp9Y3tx7sg+LXLDFhpuaZRGgxIiRKl0Z97PJx3M\nMrpBNl9w9bbBHwMc6f7vLWDpEOomG/FgFzzfbdSQfy4tkMAxt6upS/UEAlnA18WE\nwduwkUYmc1nhtn9pSUotd8Y25tUoDtb9EDSacl1pAoGAGkmNCwnfiQPtMPRmBccm\nZahEoQWpceejvCxutZmhA6RWZXWKZxly6L8iNd3WbOwgSLe3r6e+J5FT0bQUD8Ry\nKvaeW16aDaj0atHmdjRNMBewGfK8pUgY/4YQSUgtZXLGGgSO3eAgtVHbiYYIqvAF\nmidPM45xAoE4cJ2S4ifErPM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "vechurityadmin@vecurityapp.iam.gserviceaccount.com",
+  "client_id": "103483544155159953408",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/vechurityadmin%40vecurityapp.iam.gserviceaccount.com"
+}

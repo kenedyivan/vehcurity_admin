@@ -1,0 +1,33 @@
+extends layout
+
+block content
+    // main content start
+    #page-wrapper
+        .main-page
+            .tables
+                h2.title1 Guard requests :
+                    |
+                    |
+                    = size
+
+                .table-responsive.bs-example.widget-shadow
+                    // h4 Responsive Table:
+                    if size > 0
+                        table.table.table-bordered
+                            thead
+                                tr
+                                    th ID
+                                    th Date Created
+                                    th Owner
+                                    th Latitude
+                                    th Longitude
+                            tbody
+                                each val, index in requests
+                                    tr
+                                        td= index
+                                        td= val.createdAt
+                                        td= val.ownerId
+                                        td= val.lat
+                                        td= val.lng
+                    else
+                        h4.title1 No guard requests found!
