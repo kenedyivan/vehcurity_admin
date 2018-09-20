@@ -1,28 +1,28 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var bodyParser = require('body-parser');
-var admin = require('./config/firebase_config.js');
-var app = express();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-var cron = require('node-cron');
-var passport = require('passport');
-var flash = require('connect-flash');
+let createError = require('http-errors');
+let express = require('express');
+let path = require('path');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
+let bodyParser = require('body-parser');
+let admin = require('./config/firebase_config.js');
+let app = express();
+let server = require('http').Server(app);
+let io = require('socket.io')(server);
+let cron = require('node-cron');
+let passport = require('passport');
+let flash = require('connect-flash');
 const cookieSession = require('cookie-session');
-var connection = require('./config/db_config');
+let connection = require('./config/db_config');
 //connection.connect();
 
 //Socket io
 io.on('connection', function (socket) {
     console.log('a user connected');
 
-    var ref = admin.database().ref('Guards');
+    let ref = admin.database().ref('Guards');
     ref.on('child_added', function (snap) {
         ref.on('value', function (guardsSnap) {
-            var data = {};
+            let data = {};
             data.numOnline = guardsSnap.numChildren();
             data.guard = snap.key;
 
@@ -34,7 +34,7 @@ io.on('connection', function (socket) {
 
     ref.on('child_removed', function (snap) {
         ref.on('value', function (guardsSnap) {
-            var data = {};
+            let data = {};
             data.numOnline = guardsSnap.numChildren();
             data.guard = snap.key;
 
@@ -61,10 +61,10 @@ app.use(passport.session());
 
 app.get('/fcm/:token', function (req, res) {
     // This registration token comes from the client FCM SDKs.
-    var registrationToken = req.params.token;
+    let registrationToken = req.params.token;
 
     // See documentation on defining a message payload.
-    var message = {
+    let message = {
         notification: {
             title: "finish",
             body: "guard session complete"
@@ -84,11 +84,11 @@ app.get('/fcm/:token', function (req, res) {
 });
 
 //Tasks object
-var tasks = {};
+let tasks = {};
 
 //Begin cron tasks
 function startGuardCounter(guardToken, duration) {
-    var message = {
+    let message = {
         notification: {
             title: "starting",
             body: "{\"duration\":" + "\"" + duration + "\",\"message\":\"guard session started\"}"
@@ -105,7 +105,7 @@ function startGuardCounter(guardToken, duration) {
 }
 
 function startOwnerCounter(ownerToken, duration, guardId, totalCost) {
-    var message = {
+    let message = {
         notification: {
             title: "starting",
             body: "{\"duration\":" + "\"" + duration + "\",\"guardId\":\"" + guardId + "\",\"totalCost\":\"" + totalCost + "\"," +
@@ -123,20 +123,20 @@ function startOwnerCounter(ownerToken, duration, guardId, totalCost) {
 }
 
 function logNotification(image, message) {
-    var notificationData = {
+    let notificationData = {
         image: image,
         message: message,
         status: "0",
         createdAt: new Date().toLocaleString()
     };
 
-    var ref = admin.database().ref();
-    var notifications = ref.child('Notifications');
+    let ref = admin.database().ref();
+    let notifications = ref.child('Notifications');
 
-    var newNotificationKey = notifications.push().key;
+    let newNotificationKey = notifications.push().key;
     console.log("New notification key: ", newNotificationKey);
 
-    var updates = {};
+    let updates = {};
     updates['/Notifications/' + newNotificationKey] = notificationData;
     updates['/NewNotifications/' + newNotificationKey] = notificationData;
 
@@ -145,19 +145,19 @@ function logNotification(image, message) {
 }
 
 function activateGuard(guardId) {
-    var ref = admin.database().ref();
+    let ref = admin.database().ref();
 
-    var guards = ref.child('GuardsInformation');
+    let guards = ref.child('GuardsInformation');
     guards.child(guardId).once('value')
         .then(function (snap) {
 
-            var activeGuardData = {
+            let activeGuardData = {
                 avatar: snap.val().avatar,
                 name: snap.val().name,
                 createdAt: new Date()
             };
 
-            var aGuards = {};
+            let aGuards = {};
             aGuards['/ActiveGuards/' + guardId] = activeGuardData;
             ref.update(aGuards).then(function (snap) {
                 console.log("Active: ", snap);
@@ -166,12 +166,12 @@ function activateGuard(guardId) {
 }
 
 function inkRandom() {
-    var inkArray = ['sl-primary', 'sl-danger', 'sl-success', 'sl-warning', ''];
+    let inkArray = ['sl-primary', 'sl-danger', 'sl-success', 'sl-warning', ''];
     return inkArray[Math.floor(Math.random() * inkArray.length)];
 }
 
 function logTaskToDB(taskId, agentId, message, status) {
-    var ink = inkRandom();
+    let ink = inkRandom();
     connection.query("INSERT INTO task_logs(fire_ID,created_by,message,ink) " +
         "VALUES('" + taskId + "','" + agentId + "','" + message + "','" + ink + "')",
         function (err, rows, fields) {
@@ -181,8 +181,8 @@ function logTaskToDB(taskId, agentId, message, status) {
             connection.query("SELECT * FROM task_logs WHERE id ='" + rows.insertId + "' ",
                 function (err, rows, fields) {
                     if (err) throw err;
-                    var d = rows[0];
-                    var data = {};
+                    let d = rows[0];
+                    let data = {};
                     data.id = d.id;
                     data.fireId = d.fire_ID;
                     data.createdAt = d.created_at;
@@ -200,22 +200,22 @@ function logTaskToDB(taskId, agentId, message, status) {
 
 app.get('/create-guarding-session/:guardId/:ownerId/:duration/:startTime/:endTime/:totalCost/:' +
     'status/:minute/:hour/:day/:month/:requestKey/:paymentType', function (req, res) {
-    var guardId = req.params.guardId;
-    var ownerId = req.params.ownerId;
-    var duration = req.params.duration;
-    var startTime = req.params.startTime;
-    var endTime = req.params.endTime;
-    var totalCost = req.params.totalCost;
-    var status = req.params.status;
-    var minute = req.params.minute;
-    var hour = req.params.hour;
-    var day = req.params.day;
-    var month = req.params.month;
-    var requestKey = req.params.requestKey;
-    var paymentType = req.params.paymentType;
+    let guardId = req.params.guardId;
+    let ownerId = req.params.ownerId;
+    let duration = req.params.duration;
+    let startTime = req.params.startTime;
+    let endTime = req.params.endTime;
+    let totalCost = req.params.totalCost;
+    let status = req.params.status;
+    let minute = req.params.minute;
+    let hour = req.params.hour;
+    let day = req.params.day;
+    let month = req.params.month;
+    let requestKey = req.params.requestKey;
+    let paymentType = req.params.paymentType;
 
 
-    var guardSessionData = {
+    let guardSessionData = {
         guard: guardId,
         owner: ownerId,
         duration: duration,
@@ -230,29 +230,29 @@ app.get('/create-guarding-session/:guardId/:ownerId/:duration/:startTime/:endTim
         submitCashPayment(guardSessionData, requestKey);
     }
 
-    var ref = admin.database().ref();
-    var guardSession = ref.child('GuardSessions');
+    let ref = admin.database().ref();
+    let guardSession = ref.child('GuardSessions');
 
-    var newGuardSessionKey = guardSession.push().key;
+    let newGuardSessionKey = guardSession.push().key;
     console.log("New session key: ", newGuardSessionKey);
 
-    var updates = {};
+    let updates = {};
     updates['/GuardSessions/' + newGuardSessionKey] = guardSessionData;
     ref.update(updates, function (a) {
-        var fcmTokens = ref.child('FcmTokens');
+        let fcmTokens = ref.child('FcmTokens');
         fcmTokens.once('value').then(function (snapshot) {
-            var guardToken = snapshot.val()[guardId].token;
-            var ownerToken = snapshot.val()[ownerId].token;
+            let guardToken = snapshot.val()[guardId].token;
+            let ownerToken = snapshot.val()[ownerId].token;
 
             startGuardCounter(guardToken, duration); //Starts guard counter
             startOwnerCounter(ownerToken, duration, guardId, totalCost); //Starts owner counter
 
-            var guards = ref.child('GuardsInformation');
+            let guards = ref.child('GuardsInformation');
             guards.child(guardId).once('value')
                 .then(function (snap) {
-                    var timeInMinutes = parseInt(duration);
-                    var hours = timeInMinutes / 60;
-                    var minutes = timeInMinutes % 60;
+                    let timeInMinutes = parseInt(duration);
+                    let hours = timeInMinutes / 60;
+                    let minutes = timeInMinutes % 60;
 
                     logNotification(snap.val().avatar, snap.val().name +
                         " Started a guard session of " + Math.round(hours) + " hrs and " + minutes + " mins");
@@ -267,9 +267,9 @@ app.get('/create-guarding-session/:guardId/:ownerId/:duration/:startTime/:endTim
 
     activateGuard(guardId);
 
-    var taskId = newGuardSessionKey;
-    var task;
-    var cronString = minute + ' ' + hour + ' ' + day + ' ' + month + ' *';
+    let taskId = newGuardSessionKey;
+    let task;
+    let cronString = minute + ' ' + hour + ' ' + day + ' ' + month + ' *';
     console.log('Cron: ', cronString);
     task = cron.schedule(cronString, function () {
         ///todo Create the guarding object from here
@@ -286,8 +286,8 @@ app.get('/create-guarding-session/:guardId/:ownerId/:duration/:startTime/:endTim
 
 function submitCashPayment(guardSessionData, requestKey) {
     console.log("Guard session ", guardSessionData);
-    var dateTime = new Date().getTime();
-    var paymentData = {
+    let dateTime = new Date().getTime();
+    let paymentData = {
         guard: guardSessionData.guard,
         owner: guardSessionData.owner,
         duration: guardSessionData.duration,
@@ -302,16 +302,16 @@ function submitCashPayment(guardSessionData, requestKey) {
     console.log("payment ", paymentData);
 
 
-    var ref = admin.database().ref();
-    var payments = ref.child('Payments');
+    let ref = admin.database().ref();
+    let payments = ref.child('Payments');
 
-    var paymentKey = payments.push().key;
+    let paymentKey = payments.push().key;
     console.log("New payments key: ", paymentKey);
 
-    var updates = {};
+    let updates = {};
     updates['/Payments/' + paymentKey] = paymentData;
     ref.update(updates, function (a) {
-        var fcmTokens = ref.child('FcmTokens');
+        let fcmTokens = ref.child('FcmTokens');
         fcmTokens.once('value').then(function (snapshot) {
             ///todo log info here
         }).catch(function (error) {
@@ -330,7 +330,7 @@ app.get('/send-message/', function (req, res) {
 });
 
 function endGuardCounter(guardToken) {
-    var message = {
+    let message = {
         notification: {
             title: "ending",
             body: "{\"message\":\"guard session ended\"}"
@@ -347,7 +347,7 @@ function endGuardCounter(guardToken) {
 }
 
 function endOwnerCounter(ownerToken) {
-    var message = {
+    let message = {
         notification: {
             title: "ending",
             body: "{\"message\":\"guard session ended\"}"
@@ -364,8 +364,8 @@ function endOwnerCounter(ownerToken) {
 }
 
 function inactivateGuard(guardId) {
-    var ref = admin.database().ref();
-    var activeGuard = ref.child('ActiveGuards');
+    let ref = admin.database().ref();
+    let activeGuard = ref.child('ActiveGuards');
     activeGuard.child(guardId)
         .remove().then(function (snap) {
         console.log("Guard inactivated: ", snap);
@@ -378,36 +378,36 @@ function destroyTask(taskId) {
         delete tasks[taskId];
 
         //getUserFcmTokens
-        var ref = admin.database().ref();
-        var guardSession = ref.child('GuardSessions');
+        let ref = admin.database().ref();
+        let guardSession = ref.child('GuardSessions');
 
         guardSession.child(taskId).once('value')
             .then(function (snap) {
-                var key = snap.key;
-                var session = snap.val();
-                var guardId = session.guard;
-                var ownerId = session.owner;
-                var status = session.status;
+                let key = snap.key;
+                let session = snap.val();
+                let guardId = session.guard;
+                let ownerId = session.owner;
+                let status = session.status;
 
                 console.log("Delete key: " + key + " Status " + status);
 
-                var sessionStatusUpdate = {};
+                let sessionStatusUpdate = {};
                 sessionStatusUpdate.status = "1";
 
                 guardSession.child(taskId).update(sessionStatusUpdate);
 
                 console.log("Task " + taskId + " Destroyed");
                 //Notify guard and owner
-                var fcmTokens = ref.child('FcmTokens');
+                let fcmTokens = ref.child('FcmTokens');
                 fcmTokens.once('value').then(function (snapshot) {
-                    var guardToken = snapshot.val()[guardId].token;
-                    var ownerToken = snapshot.val()[ownerId].token;
+                    let guardToken = snapshot.val()[guardId].token;
+                    let ownerToken = snapshot.val()[ownerId].token;
 
                     endGuardCounter(guardToken);//Ends guard counter
                     endOwnerCounter(ownerToken);//Ends owner counter
                     inactivateGuard(guardId);
 
-                    var guards = ref.child('GuardsInformation');
+                    let guards = ref.child('GuardsInformation');
                     guards.child(guardId).once('value')
                         .then(function (snap) {
                             logNotification("/vehc_images/shield.png", snap.val().name + " Ended a guard session");
@@ -434,7 +434,7 @@ function destroyTask(taskId) {
 
 
 /*
-var firebase = require('firebase');
+let firebase = require('firebase');
 
 //FirebaseAdmin
 firebase.initializeApp({
@@ -443,8 +443,8 @@ firebase.initializeApp({
 });
 */
 
-/*var ref = firebase.database().ref('node-client');
-var messageRef = ref.child('messages');
+/*let ref = firebase.database().ref('node-client');
+let messageRef = ref.child('messages');
 
 messageRef.push({
     name:'Akena',
@@ -453,8 +453,8 @@ messageRef.push({
     text:'New admin'
 });*/
 
-/*var ref = firebase.database().ref('node-client');
-var guards = ref.child('messages');
+/*let ref = firebase.database().ref('node-client');
+let guards = ref.child('messages');
 
 ref.once('value')
     .then(function (snap){
@@ -468,15 +468,15 @@ ref.once('value')
 //.FirebaseAdmin
 
 //Actual application routes
-var guardRouter = require('./routes/guards.route');
-var ownerRouter = require('./routes/owners.route');
-var guardRequestsRouter = require('./routes/guard_requests.route');
-var guardSessionsRouter = require('./routes/guard_sessions.route');
-var guardOnlineRouter = require('./routes/guards_online.route');
-var dashboardRouter = require('./routes/dashboard.route');
-var authRouter = require('./routes/auth.route');
-var notificationRouter = require('./routes/notifications.route');
-var owners_payment_methods = require('./routes/owners_payment_method.route');
+let guardRouter = require('./routes/guards.route');
+let ownerRouter = require('./routes/owners.route');
+let guardRequestsRouter = require('./routes/guard_requests.route');
+let guardSessionsRouter = require('./routes/guard_sessions.route');
+let guardOnlineRouter = require('./routes/guards_online.route');
+let dashboardRouter = require('./routes/dashboard.route');
+let authRouter = require('./routes/auth.route');
+let notificationRouter = require('./routes/notifications.route');
+let owners_payment_methods = require('./routes/owners_payment_method.route');
 
 
 // view engine setup

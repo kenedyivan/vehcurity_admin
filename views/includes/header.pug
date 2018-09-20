@@ -1,0 +1,57 @@
+.sticky-header.header-section
+    .header-left
+        // toggle button start
+        button#showLeftPush
+            i.fa.fa-bars
+        // toggle button end
+        .profile_details_left
+            // notifications of menu start
+            ul.nofitications-dropdown
+                li.dropdown.head-dpdn
+                    a#notify.dropdown-toggle(href='#', data-toggle='dropdown', aria-expanded='false')
+                        i.fa.fa-bell
+                        //span.badge.blue
+                    ul.dropdown-menu
+                        li
+                            .notification_header
+                                h3#notify-count
+                        ul#notifications(style="list-style-type:none;")
+                        li
+                            .notification_bottom
+                                a(href='/notifications') See all notifications
+            .clearfix
+        // notification menu end
+        .clearfix
+    .header-right
+        .profile_details
+            ul
+                li.dropdown.profile_details_drop
+                    a.dropdown-toggle(href='#', data-toggle='dropdown', aria-expanded='false')
+                        .profile_img
+                            span.prfil-img
+                                img(src='vehc_images/avatar.png', alt='', width='50px', height='50px')
+                            .user-name
+                                p Admin Name
+                                span Administrator
+                            i.fa.fa-angle-down.lnr
+                            i.fa.fa-angle-up.lnr
+                            .clearfix
+                    ul.dropdown-menu.drp-mnu
+                        li
+                            a(href='#')
+                                i.fa.fa-cog
+                                |  Settings
+                        li
+                            a(href='#')
+                                i.fa.fa-user
+                                |  My Account
+                        li
+                            a(href='#')
+                                i.fa.fa-suitcase
+                                |  Profile
+                        li
+                            a(href='/auth/logout')
+                                i.fa.fa-sign-out
+                                |  Logout
+        .clearfix
+    .clearfix

@@ -1,0 +1,48 @@
+#cbp-spmenu-s1.cbp-spmenu.cbp-spmenu-vertical.cbp-spmenu-left
+    // left-fixed -navigation
+    aside.sidebar-left
+        nav.navbar.navbar-inverse
+            .navbar-header
+                button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='.collapse', aria-expanded='false')
+                    span.sr-only Toggle navigation
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+                h1
+                    a.navbar-brand(href='index.html')
+                        span.fa.fa-area-chart
+                        |  Vehcurity
+                        span.dashboard_text Admin Console
+            #bs-example-navbar-collapse-1.collapse.navbar-collapse
+                ul.sidebar-menu
+                    li.header MAIN NAVIGATION
+                    li.treeview
+                        a(href='/')
+                            i.fa.fa-dashboard
+                            span Dashbaord
+                    li.treeview
+                        a(href='/guards-online')
+                            i.fa.fa-toggle-on
+                            span Guards Online
+                            span.online-count.label.label-primary.pull-right
+                    li.treeview
+                        a(href='/guard-sessions')
+                            i.fa.fa-shield
+                            span Guard Sessions
+                    li.treeview
+                        a(href='/guard-requests')
+                            i.fa.fa-exclamation-circle
+                            span Guard Requests
+                    li.treeview
+                        a(href='/owners')
+                            i.fa.fa-car
+                            span Car Owners
+                    li.treeview
+                        a(href='/guards')
+                            i.fa.fa-users
+                            span Car Guards
+                    li.treeview
+                        a(href='/notifications')
+                            i.fa.fa-bell
+                            span Notifications
+            // /.navbar-collapse
