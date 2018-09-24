@@ -23,6 +23,11 @@ router.get('/:guardId/delete', function(req, res) {
     GuardsController.delete_guard(req,res,req.params.guardId);
 });
 
+/* DELETE2 guard. */
+router.post('/delete', function(req, res) {
+    GuardsController.delete_guard_form(req,res);
+});
+
 /* Edit guard details. */
 router.get('/:guardId/edit', function(req, res) {
     GuardsController.edit_guard(req,res,req.params.guardId);

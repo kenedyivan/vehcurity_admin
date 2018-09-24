@@ -57,6 +57,25 @@ module.exports = {
             });
     },
 
+    delete_guard_form: function (req, res) {
+        let guardId = req.body.guard_id;
+        admin.auth().deleteUser(guardId)
+            .then(function () {
+                let ref = admin.database().ref('GuardsInformation');
+                ref.child(guardId).remove(function (e) {
+                    console.log("Successfully deleted guard");
+                    req.flash('info', 'Guard deleted');
+                    res.redirect('/guards');
+                });
+
+            })
+            .catch(function (error) {
+                console.log("Error deleting guard:", error);
+                req.flash('error', error.message);
+                res.redirect('/guards');
+            });
+    },
+
     edit_guard: function (req, res, guardId) {
         let guardData;
         let ref = admin.database().ref('GuardsInformation');

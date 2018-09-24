@@ -99,6 +99,10 @@ html
             //script(src='/socket.io/socket.io.js')
             script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js')
             script.
+                var delete_cookie = function (name) {
+                    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                };
+            script.
                 $(function () {
                     var el = $("#message-pod");
                     var error_el = $("#error-message-pod");
@@ -108,15 +112,18 @@ html
                         //No flash message set
                     } else {
                         toastr["info"](message)
+                        el.html('');
                     }
 
                     if (error_el.text() === '') {
                         //No flash error message set
                     } else {
                         toastr["error"](error_message)
+                        error_el.html('');
                     }
-                    el.html('');
-                    error_el.html('');
+
+                    //delete_cookie('messages')
+
                 });
 
                 toastr.options = {
@@ -136,6 +143,15 @@ html
                     "showMethod": "fadeIn",
                     "hideMethod": "fadeOut"
                 }
+            script.
+                function showModal(index, name) {
+                    console.log(index)
+                    $(".modal-content #guardId").val(index);
+                    $(".modal-body #message").html('Delete guard ' + name + '?');
+                    $('#centralModalSm').modal('show')
+
+                }
+
             script.
                 $(document).ready(function () {
                     $('#customer-table').DataTable();
