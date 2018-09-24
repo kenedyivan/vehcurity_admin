@@ -7,11 +7,11 @@ var fire_base = firebase.initializeApp({
     databaseURL: "https://vecurityapp.firebaseio.com/"
 });*/
 
-var admin = require('firebase-admin');
+let admin = require('firebase-admin');
 
-var serviceAccount = require('../vecurityapp-f29b6ae59a04.json');
+let serviceAccount = require('../vecurityapp-f29b6ae59a04.json');
 
-var fire_base = admin.initializeApp({
+let fire_base = admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: 'https://vecurityapp.firebaseio.com/'
 });

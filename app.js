@@ -68,7 +68,7 @@ app.use('/dashboard', authCheck, dashboardRouter);
 app.use('/auth', authRouter);
 app.use('/notifications', notificationRouter);
 app.use('/payment_methods', owners_payment_methods);
-app.use('/guard_credit', guardsCreditRouter);
+app.use('/credit', guardsCreditRouter);
 app.use('/test', testRouter);
 app.use('/guard-sessions-api', guardSessionApiRouter);
 

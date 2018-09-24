@@ -36,9 +36,13 @@ block content
                                         td= val.name
                                         td= val.email
                                         td= val.phone
-                                        td 0.0
+                                        td
+                                            if val.credit
+                                                =val.credit
+                                            else
+                                                =0
                                         td(style='text-align:center')
-                                            a.btn.btn-info(type='button', href='/guards/' + index + '/edit') Credit
+                                            a.btn.btn-info(type='button', href='/credit/' + index + '/add') Credit
                                             |
                                             |
                                             a.btn.btn-warning(type='button', href='/guards/' + index + '/edit') Edit

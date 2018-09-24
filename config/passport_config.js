@@ -47,35 +47,6 @@ module.exports = function (passport) {
 
             });
 
-
-            /* connection.query("SELECT * FROM `admin` WHERE `email` = '" + email + "'", function (err, rows) {
-                 if (err)
-                     return done(err);
-                 if (!rows.length) {
-                     console.log("No user found");
-                     return done(null, false, {message:"No user found"});
-                 }
-
-                 // if the user is found but the password is wrong
-                 if (!(rows[0].password === password)){
-                     return done(null, false, {message:"Wrong password"});
-                 }
-
-                 // all is well, return successful user
-                 return done(null, rows[0]);
-
-             });*/
-
-            /*User.findOne({ username: username }, function(err, user) {
-                if (err) { return done(err); }
-                if (!user) {
-                    return done(null, false, { message: 'Incorrect username.' });
-                }
-                if (!user.validPassword(password)) {
-                    return done(null, false, { message: 'Incorrect password.' });
-                }
-                return done(null, user);
-            });*/
         }
     ));
 

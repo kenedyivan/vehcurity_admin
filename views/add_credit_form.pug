@@ -1,0 +1,17 @@
+extends layout
+
+block content
+    #page-wrapper
+        .main-page
+            .forms
+                h2.title1 Add credit
+                .form-grids.row.widget-shadow(data-example-id='basic-forms')
+                    .form-body
+                        form(method="post", action="/credit/update-guard-credit", data-toggle='validator')
+                            .form-group
+                                label(for='amount') Amount (Shs)
+                                input#amount.form-control(type='text',
+                                name="amount", placeholder='Amount')
+                            .form-group
+                            button.btn.btn-default(type='submit') Add
+                            input(type='hidden', name="guardId", value=guardId)

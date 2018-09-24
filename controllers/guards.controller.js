@@ -172,7 +172,8 @@ module.exports = {
                     name: fullName,
                     email: email,
                     phone: phone,
-                    password: password
+                    password: password,
+                    credit: 0
                 }, function (a) {
                     req.flash('info', 'Guard created');
                     res.redirect('/guards');
