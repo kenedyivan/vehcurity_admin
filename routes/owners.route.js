@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
-var OwnersController = require('../controllers/owners.controller');
+let express = require('express');
+let router = express.Router();
+let OwnersController = require('../controllers/owners.controller');
 
 /* GET owners listing. */
 router.get('/', function(req, res,next) {

@@ -1,5 +1,6 @@
-let admin = require('./config/firebase_config.js');
+let admin = require('../config/firebase_config.js');
 let cron = require('node-cron');
+let dbConnection = require('../config/db_config');
 
 module.exports = {
 
@@ -207,13 +208,13 @@ module.exports = {
 
     logTaskToDB: function (taskId, agentId, message, status) {
         let ink = this.inkRandom();
-        connection.query("INSERT INTO task_logs(fire_ID,created_by,message,ink) " +
+        dbConnection.query("INSERT INTO task_logs(fire_ID,created_by,message,ink) " +
             "VALUES('" + taskId + "','" + agentId + "','" + message + "','" + ink + "')",
             function (err, rows, fields) {
                 if (err) throw err;
                 console.log('Created task', rows);
 
-                connection.query("SELECT * FROM task_logs WHERE id ='" + rows.insertId + "' ",
+                dbConnection.query("SELECT * FROM task_logs WHERE id ='" + rows.insertId + "' ",
                     function (err, rows, fields) {
                         if (err) throw err;
                         let d = rows[0];

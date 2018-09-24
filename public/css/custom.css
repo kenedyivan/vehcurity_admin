@@ -102,3 +102,7 @@
         margin-left: auto;
     }
 }
+
+#message-pod{
+    display: none;
+}

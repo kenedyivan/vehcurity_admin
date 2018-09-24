@@ -10,7 +10,8 @@ html
             | Vehcurity Admin Console
         meta(name='viewport', content='width=device-width, initial-scale=1')
         meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
-        meta(name='keywords', content='Glance Design Dashboard Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, \
+        meta(name='keywords', content='Glance Design Dashboard Responsive web template, Bootstrap Web Templates,\
+         Flat Web Templates, Android Compatible web template, \
     SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design')
         script(type='application/x-javascript').
             addEventListener("load", function () {
@@ -20,6 +21,10 @@ html
             }
         // Bootstrap Core CSS
         link(href='/css/bootstrap.css', rel='stylesheet', type='text/css')
+        // Material design bootstrap
+        //link(href='/scripts/css/mdb.css', rel='stylesheet', type='text/css')
+        link(href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css", rel="stylesheet", type='text/css')
+        link(href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.10/css/mdb.min.css", rel="stylesheet", type='text/css')
         // Custom CSS
         link(href='/css/style.css', rel='stylesheet', type='text/css')
         // font-awesome icons CSS
@@ -32,7 +37,8 @@ html
         script(src='/js/jquery-1.11.1.min.js')
         script(src='/js/modernizr.custom.js')
         // webfonts
-        link(href='//fonts.googleapis.com/css?family=PT+Sans:400,400i,700,700i&subset=cyrillic,cyrillic-ext,latin-ext', rel='stylesheet')
+        link(href='//fonts.googleapis.com/css?family=PT+Sans:400,400i,700,' +
+        '700i&subset=cyrillic,cyrillic-ext,latin-ext', rel='stylesheet')
         // //webfonts
         // Metis Menu
         script(src='/js/metisMenu.min.js')
@@ -42,6 +48,7 @@ html
         script(src="https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js")
         script(src="/helpers/config.js")
         link(href='/css/custom.css', rel='stylesheet')
+        link(href='/css/datatables.min.css', rel='stylesheet')
         // //Metis Menu
     body.cbp-spmenu-push
         .main-content
@@ -84,241 +91,60 @@ html
             // //scrolling js
             // Bootstrap Core JavaScript
             script(src='/js/bootstrap.js')
+            //script(src='/scripts/js/mdb.js')
+            // Material design bootstrap
+            script(src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js")
+            script(src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.10/js/mdb.min.js")
+            script(src='/js/datatables.min.js')
             //script(src='/socket.io/socket.io.js')
             script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js')
             script.
-                var socket = io();
                 $(function () {
-                    var socket = io();
+                    var el = $("#message-pod");
+                    var error_el = $("#error-message-pod");
+                    var error_message = error_el.text();
+                    var message = el.text();
+                    if (el.text() === '') {
+                        //No flash message set
+                    } else {
+                        toastr["info"](message)
+                    }
 
-                    socket.on('added', function (msg) {
-                        $('.online-count').text(msg.numOnline);
-                        $('#' + msg.guard).text('Online');
-
-                    });
-
-                    socket.on('removed', function (msg) {
-                        $('.online-count').text(msg.numOnline);
-                        $('#' + msg.guard).text('Offline');
-
-                    });
-
-                    socket.on('task_created', function (msg) {
-                        console.log("Message", msg);
-                        var taskList = $('.streamline');
-                        var totalCount = taskList.data("tasks");
-                        console.log("Tasks counter", totalCount);
-                        if (totalCount === 5) {
-                            $(".streamline .sl-item").last().remove();
-                        }
-                        var taskItem = '<div class="sl-item ' + msg.ink + '">' +
-                            '<div class="sl-content">' +
-                            '<small class="text-muted">' + msg.createdAt + '</small>' +
-                            '<p>' + msg.message + '</p>' +
-                            '</div>' +
-                            '</div>';
-
-                        taskList.prepend(taskItem);
-                        if (totalCount < 5) {
-                            totalCount++;
-                            taskList.data("tasks", totalCount);
-                        } else {
-                            console.log("Task count: ", totalCount);
-                        }
-
-                    });
+                    if (error_el.text() === '') {
+                        //No flash error message set
+                    } else {
+                        toastr["error"](error_message)
+                    }
+                    el.html('');
+                    error_el.html('');
                 });
 
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": 300,
+                    "hideDuration": 1000,
+                    "timeOut": 5000,
+                    "extendedTimeOut": 1000,
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            script.
+                $(document).ready(function () {
+                    $('#customer-table').DataTable();
+                });
+            script(src='/js/hotsocket/hotSocket.js')
             script(src='https://www.gstatic.com/firebasejs/4.12.0/firebase.js')
             script(src='https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js')
             script(src='https://www.gstatic.com/firebasejs/4.12.0/firebase-firestore.js')
-            script.
-                // Initialize Firebase
-                var config = {
-                    apiKey: "AIzaSyA15fgg0qZb1nzLUNPrzw8hgD32rd5Kp7M",
-                    authDomain: "vecurityapp.firebaseapp.com",
-                    databaseURL: "https://vecurityapp.firebaseio.com",
-                    projectId: "vecurityapp",
-                    storageBucket: "vecurityapp.appspot.com",
-                    messagingSenderId: "400920472071"
-                };
-                firebase.initializeApp(config);
-
-                //Db reference
-                var ref = firebase.database().ref();
-                //Guards
-                var guards = ref.child('GuardsInformation');
-                guards.once('value')
-                    .then(function (snap) {
-                        $('#num-guards').text(snap.numChildren());
-                    });
-
-                //Owners
-                var owners = ref.child('OwnersInformation');
-                owners.once('value')
-                    .then(function (snap) {
-                        $('#num-owners').text(snap.numChildren());
-                    });
-
-                //Online guards
-                var onlineGuards = ref.child('Guards');
-                onlineGuards.once('value')
-                    .then(function (snap) {
-                        $('#num-online').text(snap.numChildren());
-                    });
-
-                onlineGuards.on('child_added', function (snap) {
-                    onlineGuards.on('value', function (onlineSnap) {
-                        $('#num-online').text(onlineSnap.numChildren());
-                    });
-                });
-
-                onlineGuards.on('child_removed', function (snap) {
-                    onlineGuards.on('value', function (onlineSnap) {
-                        $('#num-online').text(onlineSnap.numChildren());
-                    });
-
-                });
-
-                //Active sessions
-                var activeSessions = ref.child('ActiveGuards');
-                activeSessions.on('value', function (snap) {
-                    $('#num-active-sessions').text(snap.numChildren());
-                });
-
-                activeSessions.on('child_added', function (snap) {
-                    activeSessions.on('value', function (snap) {
-                        $('#num-active-sessions').text(snap.numChildren());
-                    });
-                });
-                activeSessions.on('child_removed', function (snap) {
-                    activeSessions.on('value', function (snap) {
-                        $('#num-active-sessions').text(snap.numChildren());
-                    });
-                });
-                //--End active sessions
-
-                //session logs
-
-                //--End session logs
-
-                //Total requests
-                var requests = ref.child('Requests');
-                requests.on('value', function (requestSnap) {
-                    $('#num-requests').text(requestSnap.numChildren());
-                });
-
-                requests.on('child_added', function (requestSnap) {
-                    requests.on('value', function (requestSnap) {
-                        $('#num-requests').text(requestSnap.numChildren());
-                    });
-                });
-
-
-                //Notifications
-                var newNotifications = ref.child('NewNotifications');
-                newNotifications.on('child_added', function (snap) {
-                    newNotifications.on('value', function (snap) {
-                        var count = snap.numChildren();
-                        if (count > 0) {
-                            var count = $('<span class="notification-count badge blue"></span>').text(snap.numChildren());
-                            $('#notify').append(count)
-                            $('#notify-count').text("You have " + snap.numChildren() + " new notification");
-                        } else {
-                            $('#notify-count').text("You have 0 new notification");
-                        }
-                    });
-                });
-
-                $("#notify").on('click', function () {
-                    ref.child('NewNotifications')
-                        .remove(function (e) {
-                            $('.notification-count').remove();
-                            $('#notify-count').text("You have 0 new notification");
-                        });
-                });
-
-                var notifications = ref.child('Notifications');
-                var seenNotifications = 0;
-                notifications.orderByChild('createdAt').limitToLast(5).on('child_added', function (addedSnap) {
-                    seenNotifications++;
-                    var notifyList = $('#notifications');
-                    if (seenNotifications > 5) {
-                        console.log("Seen", "Seeing all the 5");
-                        notifyList.find('li:last-child').remove();
-                    }
-
-                    console.log("Count ", addedSnap.numChildren());
-                    var val = addedSnap.val();
-                    var listItem = '<li>' +
-                        '<a href="#">' +
-                        '<div class="user_img">' +
-                        '<img src="' + val.image + '" alt="">' +
-                        '</div>' +
-                        '<div class="notification_desc">' +
-                        '<p>' + val.message + '</p>' +
-                        '<p>' +
-                        '<span>' + val.createdAt + '</span>' +
-                        '</p>' +
-                        '</div>' +
-                        '<div class="clearfix"></div>' +
-                        '</a>' +
-                        '</li>';
-                    var notificationBody = $(listItem);
-                    notifyList.prepend(notificationBody);
-
-
-                });
-
-                //Active guards
-                var activeGuards = ref.child('ActiveGuards');
-                var seenActiveGuards = 0;
-                activeGuards.orderByChild('createdAt').limitToLast(5).on('child_added', function (snap) {
-                    seenActiveGuards++;
-                    if (seenActiveGuards > 5) {
-                        $(".list-group a").last().remove();
-                    }
-
-                    var listGroup = $('.list-group');
-                    var listItem = '<a id="' + snap.key + '" class="list-group-item media" href="">' +
-                        '<div class="pull-left">' +
-                        '<img class="lg-item-img" src="' + snap.val().avatar + '" alt="" width="50px" height="50px">' +
-                        '</div>' +
-                        '<div class="media-body">' +
-                        '<div class="pull-left">' +
-                        '<div class="lg-item-heading">' + snap.val().name + '</div>' +
-                        '<small class="lg-item-text">' + snap.val().createdAt + '</small>' +
-                        '</div>' +
-                        '<div class="pull-right">' +
-                        '<div class="lg-item-heading">Active</div>' +
-                        '</div>' +
-                        '</div>' +
-                        '</a>';
-
-                    var activeGuardBody = $(listItem);
-                    listGroup.prepend(activeGuardBody);
-
-                });
-
-                activeGuards.on('child_removed', function (snap) {
-                    var key = snap.key;
-                    var item = $('#' + key);
-                    item.remove();
-
-                });
-
-                activeGuards.on('value', function (snap) {
-                    var len = snap.numChildren();
-                    var listGroup = $('.list-group');
-                    var status = $('<p class="no-guards">No guards active!</p>');
-
-                    if (len < 1) {
-                        listGroup.append(status);
-                    } else {
-                        $('.no-guards').remove();
-                    }
-
-                });
+            script(src='/js/firebase/firebaseOperations.js')
 
 
 

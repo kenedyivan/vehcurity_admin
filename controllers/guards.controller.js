@@ -1,23 +1,23 @@
-var admin = require('../config/firebase_config.js');
+let admin = require('../config/firebase_config.js');
 
 module.exports = {
     get_guards: function (req, res) {
         //console.log("Returning guards");
-        var ref = admin.database().ref();
-        var guards = ref.child('GuardsInformation');
+        let ref = admin.database().ref();
+        let guards = ref.child('GuardsInformation');
 
-        var content = '';
+        let content = '';
         guards.once('value')
             .then(function (snap) {
                 /*snap.forEach(function (data) {
-                    var val = data.val();
+                    let val = data.val();
                     content += val.name;
                     content += val.email;
 
                 });
                 console.log(content);*/
                 Object.size = function (obj) {
-                    var size = 0, key;
+                    let size = 0, key;
                     for (key in obj) {
                         if (obj.hasOwnProperty(key)) size++;
                     }
@@ -25,9 +25,14 @@ module.exports = {
                 };
 
                 // Get the size of an object
-                var len = Object.size(snap.val());
+                let len = Object.size(snap.val());
                 console.log(len);
-                res.render('guards_list', {guards: snap.val(), size: len});
+                res.render('guards_list',
+                    {
+                        guards: snap.val(),
+                        size: len,
+                        messages: req.flash('info')
+                    });
 
 
             });
@@ -37,37 +42,47 @@ module.exports = {
     delete_guard: function (req, res, guardId) {
         admin.auth().deleteUser(guardId)
             .then(function () {
-                var ref = admin.database().ref('GuardsInformation');
+                let ref = admin.database().ref('GuardsInformation');
                 ref.child(guardId).remove(function (e) {
                     console.log("Successfully deleted guard");
+                    req.flash('info', 'Guard deleted');
                     res.redirect('/guards');
                 });
 
             })
             .catch(function (error) {
                 console.log("Error deleting guard:", error);
+                req.flash('error', error.message);
                 res.redirect('/guards');
             });
     },
 
     edit_guard: function (req, res, guardId) {
-        var ref = admin.database().ref('GuardsInformation');
-        var guard = ref.child(guardId);
+        let guardData;
+        let ref = admin.database().ref('GuardsInformation');
+        let guard = ref.child(guardId);
         guard.on('value', function (snap) {
             console.log(snap.val());
-            res.render('edit_guard', {guard: snap.val(), id: guardId});
+            guardData = snap.val();
+            res.render('edit_guard', {
+                guard: snap.val(),
+                id: guardId,
+                messages: req.flash('info'),
+                errorMessages: req.flash('error')
+            });
         });
+
     },
 
     update: function (req, res) {
-        var uid = req.body.id;
-        var fullName = req.body.full_name;
-        var email = req.body.email;
-        var phone = req.body.phone;
-        var newPassword = req.body.confirm_password;
+        let uid = req.body.id;
+        let fullName = req.body.full_name;
+        let email = req.body.email;
+        let phone = req.body.phone;
+        let newPassword = req.body.confirm_password;
 
-        var authDataUpdate = {};
-        var dbDataUpdate = {};
+        let authDataUpdate = {};
+        let dbDataUpdate = {};
 
         if (fullName != null && fullName !== "") {
             authDataUpdate.displayName = fullName;
@@ -95,29 +110,34 @@ module.exports = {
         admin.auth().updateUser(uid, authDataUpdate)
             .then(function (userRecord) {
                 // See the UserRecord reference doc for the contents of userRecord.
-                var ref = admin.database().ref('GuardsInformation');
+                let ref = admin.database().ref('GuardsInformation');
                 ref.child(uid).update(dbDataUpdate, function (e) {
                     console.log("Successfully updated user", userRecord.toJSON());
+                    req.flash('info', 'Guard details updated');
                     res.redirect('/guards');
                 });
 
             })
             .catch(function (error) {
                 console.log("Error updating user:", error);
+                req.flash('error', error.message);
                 res.redirect('/guards/' + uid + '/edit');
             });
 
     },
 
     create_guard: function (req, res) {
-        res.render('create_guard');
+        res.render('create_guard',{
+            messages: req.flash('info'),
+            errorMessages: req.flash('error')
+        });
     },
 
     save_guard: function (req, res) {
-        var fullName = req.body.full_name;
-        var email = req.body.email;
-        var phone = req.body.phone;
-        var password = req.body.confirm_password;
+        let fullName = req.body.full_name;
+        let email = req.body.email;
+        let phone = req.body.phone;
+        let password = req.body.confirm_password;
 
         admin.auth().createUser({
             email: email,
@@ -128,19 +148,21 @@ module.exports = {
             .then(function (userRecord) {
                 // See the UserRecord reference doc for the contents of userRecord.
                 console.log("Successfully created new user:", userRecord.uid);
-                var ref = admin.database().ref('GuardsInformation');
+                let ref = admin.database().ref('GuardsInformation');
                 ref.child(userRecord.uid).set({
                     name: fullName,
                     email: email,
                     phone: phone,
                     password: password
                 }, function (a) {
+                    req.flash('info', 'Guard created');
                     res.redirect('/guards');
                 });
             })
             .catch(function (error) {
-                console.log("Error creating new user:", error);
-                res.redirect('/create');
+                console.log("Error creating new user:", error.message);
+                req.flash('error', error.message);
+                res.redirect('/guards/create');
             });
     }
 };

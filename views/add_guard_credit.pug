@@ -1,0 +1,21 @@
+extends layout
+
+block content
+    #page-wrapper
+        .main-page
+            .forms
+                h2.title1 Add credit
+                .form-grids.row.widget-shadow(data-example-id='basic-forms')
+                    .form-body
+                        form(method="post", action="/guard_credit", data-toggle='validator')
+                            .form-group
+                                label(for='exampleInputFullName') Guard Number
+                                input#exampleInputFullName.form-control(type='text',
+                                name="full_name", placeholder='Guard number')
+                            .form-group
+                                label(for='exampleInputEmail1') Amount (Shs)
+                                input#exampleInputEmail1.form-control(type='text',
+                                name="email", placeholder='Amount')
+                            .form-group
+                            button.btn.btn-default(type='submit') Add
+                            input(type='hidden', name="id")

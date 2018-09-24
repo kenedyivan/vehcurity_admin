@@ -1,5 +1,5 @@
-var admin = require('../config/firebase_config.js');
-var connection = require('../config/db_config');
+let admin = require('../config/firebase_config.js');
+let connection = require('../config/db_config');
 
 module.exports = {
 
@@ -11,7 +11,7 @@ module.exports = {
                 if (err) throw err;
 
                 Object.size = function (obj) {
-                    var size = 0, key;
+                    let size = 0, key;
                     for (key in obj) {
                         if (obj.hasOwnProperty(key)) size++;
                     }
@@ -19,11 +19,10 @@ module.exports = {
                 };
 
                 // Get the size of an object
-                var len = Object.size(rows);
-
-                res.render('dashboard', {tasks:rows, len:len});
+                let len = Object.size(rows);
+                res.render('dashboard', {tasks: rows, len: len});
             });
-
-
     }
+
+
 };

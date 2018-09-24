@@ -2,6 +2,8 @@ extends layout
 
 block content
     #page-wrapper
+        .flash-flash
+            messages.info
         .main-page
             .col_3
                 .col-md-3.widget.widget1
@@ -43,6 +45,7 @@ block content
 
                 h2.title1
                 h2.title1 Processes
+                a.btn.btn-info.btn-lg#alert-target Click me!
                 .elements
                     // photoday-section
                     .col-sm-4.wthree-crd.widgettable

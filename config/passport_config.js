@@ -1,5 +1,5 @@
-var LocalStrategy = require('passport-local').Strategy;
-var connection = require('./db_config');
+let LocalStrategy = require('passport-local').Strategy;
+let connection = require('./db_config');
 
 connection.connect();
 

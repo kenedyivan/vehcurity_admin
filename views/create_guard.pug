@@ -7,23 +7,30 @@ block content
                 h2.title1 Create guard
                 .form-grids.row.widget-shadow(data-example-id='basic-forms')
                     .form-body
-                        form(method="post", action="/guards", data-toggle='validator')
+                        form(method="post", action="/guards/save_guard_details", data-toggle='validator')
                             .form-group
                                 label(for='exampleInputFullName') Full name
-                                input#exampleInputFullName.form-control(type='text', name="full_name", placeholder='Full name')
+                                input#exampleInputFullName.form-control(type='text',
+                                name="full_name", placeholder='Full name')
                             .form-group
                                 label(for='exampleInputEmail1') Email address
-                                input#exampleInputEmail1.form-control(type='email', name="email", placeholder='Email')
+                                input#exampleInputEmail1.form-control(type='email',
+                                name="email", placeholder='Email', value=fullName)
                             .form-group
                                 label(for='exampleInputPhone') Phone
-                                input#exampleInputPhone.form-control(type='isPhoneNumber', name="phone", placeholder='Phone')
+                                input#exampleInputPhone.form-control(type='isPhoneNumber',
+                                name="phone", placeholder='Phone', value=fullName)
                             .form-group
                                 label(for='exampleInputPassword') Password
-                                input#exampleInputPassword.form-control(type='password', data-toggle='validator', data-minlength='6', name="password", placeholder='Password', required='')
+                                input#exampleInputPassword.form-control(type='password',
+                                data-toggle='validator', data-minlength='6', name="password",
+                                placeholder='Password', required='')
                                 span.help-block Minimum of 6 characters
                             .form-group
                                 label(for='inputPasswordConfirm') Confirm new password
-                                input#inputPasswordConfirm.form-control(type='password', data-match='#inputPassword', data-match-error="Whoops, these don't match", name="confirm_password", placeholder='Confirm password', required='')
+                                input#inputPasswordConfirm.form-control(type='password',
+                                data-match='#inputPassword', data-match-error="Whoops, these don't match",
+                                name="confirm_password", placeholder='Confirm password', required='')
                                 .help-block.with-errors
                             button.btn.btn-default(type='submit') Create
                             input(type='hidden', name="id")
