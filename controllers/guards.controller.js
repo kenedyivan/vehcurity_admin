@@ -31,7 +31,8 @@ module.exports = {
                     {
                         guards: snap.val(),
                         size: len,
-                        messages: req.flash('info')
+                        messages: req.flash('info'),
+                        errorMessages: req.flash('error')
                     });
 
 
@@ -146,7 +147,7 @@ module.exports = {
     },
 
     create_guard: function (req, res) {
-        res.render('create_guard',{
+        res.render('create_guard', {
             messages: req.flash('info'),
             errorMessages: req.flash('error')
         });

@@ -13,7 +13,7 @@ block content
                 .table-responsive.bs-example.widget-shadow
                     // h4 Responsive Table:
                     if size > 0
-                        table.table.table-bordered
+                        table.table#customer-table
                             thead
                                 tr
                                     th Picture
@@ -41,6 +41,11 @@ block content
                                         td= val.model
                                         td= val.licenseNumber
                                         td
-                                            a.btn.btn-danger(type='button', href='/owners/' + index + '/delete') Delete
+                                            //a.btn.btn-danger(type='button', href='/owners/' + index + '/delete') Delete
+                                            a.btn.btn-danger(type='button',
+                                            onclick='showOwnerModal(' + JSON.stringify(index) + ',' +
+                                            JSON.stringify(val.firstName + ' ' + val.lastName) + ')') Delete
                     else
                         h4.title1 No owners found!
+            // Include owner delete modal
+            include includes/delete_modals/owners_delete_modal

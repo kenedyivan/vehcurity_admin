@@ -1,0 +1,19 @@
+// Central Modal Small
+#centralModalSm.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
+    // Change class .modal-sm to change the size of the modal
+    .modal-dialog.modal-sm(role='document')
+        .modal-content
+            button.close(type='button' data-dismiss='modal' aria-label='Close')
+                span(aria-hidden='true',style='padding:10px') &times;
+            .modal-header
+                h4#myModalLabel.modal-title.w-100 Caution!!
+            .modal-body
+                p#message
+            .modal-footer
+                form(method="post", action="/guards/delete", data-toggle='validator')
+                    .form-group
+                        input#guardId.form-control(type='hidden',
+                        name="guard_id")
+                    button.btn.btn-default.btn-sm(type='button' data-dismiss='modal') Close
+                    button.btn.btn-danger.btn-sm(type='submit') Delete
+// Central Modal Small

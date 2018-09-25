@@ -42,33 +42,16 @@ block content
                                             else
                                                 =0
                                         td(style='text-align:center')
-                                            a.btn.btn-info(type='button', href='/credit/' + index + '/add') Credit
+                                            a.btn.btn-info(type='button', href='/credit/' + index + '/' + val.credit + '/add') Credit
                                             |
                                             |
                                             a.btn.btn-warning(type='button', href='/guards/' + index + '/edit') Edit
                                             |
                                             |
                                             a#delete.btn.btn-danger(type='button',
-                                            onclick='showModal('+ JSON.stringify(index) +','+ JSON.stringify(val.name)+')') Delete
+                                            onclick='showModal(' + JSON.stringify(index) + ',' + JSON.stringify(val.name) + ')') Delete
                     else
                         h4.title1 No guards found!
 
-            // Central Modal Small
-            #centralModalSm.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
-                // Change class .modal-sm to change the size of the modal
-                .modal-dialog.modal-sm(role='document')
-                    .modal-content
-                        button.close(type='button' data-dismiss='modal' aria-label='Close')
-                            span(aria-hidden='true',style='padding:10px') &times;
-                        .modal-header
-                            h4#myModalLabel.modal-title.w-100 Caution
-                        .modal-body
-                            p#message
-                        .modal-footer
-                            form(method="post", action="/guards/delete", data-toggle='validator')
-                                .form-group
-                                    input#guardId.form-control(type='hidden',
-                                    name="guard_id")
-                                button.btn.btn-sm(type='button' data-dismiss='modal') Close
-                                button.btn.btn-danger.btn-sm(type='submit') Delete
-            // Central Modal Small
+            // Include delete guard modal
+            include includes/delete_modals/guard_delete_modal

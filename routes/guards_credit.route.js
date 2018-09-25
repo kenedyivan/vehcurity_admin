@@ -3,7 +3,7 @@ let router = express.Router();
 let GuardsCreditController = require('../controllers/guards_credit.controller');
 
 /* GET add guard credit form. */
-router.get('/:guardId/add', function(req, res,next) {
+router.get('/:guardId/:credit/add', function(req, res,next) {
     GuardsCreditController.add_guard_credit_form(req,res);
 });
 

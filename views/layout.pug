@@ -43,10 +43,18 @@ html
         // Metis Menu
         script(src='/js/metisMenu.min.js')
         script(src='/js/custom.js')
+
+        //Configs imports
         script(src='/configs/counter.js')
+
+        //Firebase imports
         script(src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js")
         script(src="https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js")
+
+        //Configs imports
         script(src="/configs/config.js")
+
+        //Custom css imports
         link(href='/css/custom.css', rel='stylesheet')
         link(href='/css/datatables.min.css', rel='stylesheet')
         // //Metis Menu
@@ -98,65 +106,19 @@ html
             script(src='/js/datatables.min.js')
             //script(src='/socket.io/socket.io.js')
             script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js')
-            script.
-                var delete_cookie = function (name) {
-                    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                };
-            script.
-                $(function () {
-                    var el = $("#message-pod");
-                    var error_el = $("#error-message-pod");
-                    var error_message = error_el.text();
-                    var message = el.text();
-                    if (el.text() === '') {
-                        //No flash message set
-                    } else {
-                        toastr["info"](message)
-                        el.html('');
-                    }
 
-                    if (error_el.text() === '') {
-                        //No flash error message set
-                    } else {
-                        toastr["error"](error_message)
-                        error_el.html('');
-                    }
+            //Vehcurity_js imports
+            script(src='/js/vehcurity_js/custom_toastr.js')
+            script(src='/js/vehcurity_js/deleteModals.js')
 
-                    //delete_cookie('messages')
-
-                });
-
-                toastr.options = {
-                    "closeButton": false,
-                    "debug": false,
-                    "newestOnTop": false,
-                    "progressBar": false,
-                    "positionClass": "toast-top-right",
-                    "preventDuplicates": false,
-                    "onclick": null,
-                    "showDuration": 300,
-                    "hideDuration": 1000,
-                    "timeOut": 5000,
-                    "extendedTimeOut": 1000,
-                    "showEasing": "swing",
-                    "hideEasing": "linear",
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut"
-                }
-            script.
-                function showModal(index, name) {
-                    console.log(index)
-                    $(".modal-content #guardId").val(index);
-                    $(".modal-body #message").html('Delete guard ' + name + '?');
-                    $('#centralModalSm').modal('show')
-
-                }
-
+            //Data tables
             script.
                 $(document).ready(function () {
                     $('#customer-table').DataTable();
                 });
             script(src='/js/hotsocket/hotSocket.js')
+
+            //Firebase imports
             script(src='https://www.gstatic.com/firebasejs/4.12.0/firebase.js')
             script(src='https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js')
             script(src='https://www.gstatic.com/firebasejs/4.12.0/firebase-firestore.js')

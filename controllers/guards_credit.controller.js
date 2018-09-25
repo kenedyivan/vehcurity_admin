@@ -4,18 +4,21 @@ let business = require('../business_logic/credit');
 module.exports = {
     add_guard_credit_form: function (req, res) {
         let guardId = req.params.guardId;
+        let currentCredit = req.params.credit;
         res.render('add_credit_form',
             {
-                guardId: guardId
+                guardId: guardId,
+                currentCredit: currentCredit
             });
     },
 
     save_guard_credit: function (req, res) {
         let uid = req.body.guardId;
+        let currentCredit = req.body.currentCredit;
         let amount = req.body.amount;
 
         //Calculate credit
-        let actualCredit = business.calculate_credit(amount);
+        let actualCredit = business.calculate_credit(currentCredit,amount);
 
         let creditData = {
             credit: actualCredit
