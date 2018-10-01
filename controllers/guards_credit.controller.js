@@ -1,5 +1,5 @@
 let admin = require('../config/firebase_config.js');
-let business = require('../business_logic/credit');
+let business = require('../business_logic/guard_credit');
 
 module.exports = {
     add_guard_credit_form: function (req, res) {

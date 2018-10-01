@@ -171,12 +171,13 @@ module.exports = {
                 console.log("Successfully created new user:", userRecord.uid);
                 let ref = admin.database().ref('GuardsInformation');
                 ref.child(userRecord.uid).set({
+                    avatar: 'none',
                     name: fullName,
                     email: email,
                     phone: phone,
                     password: password,
                     credit: INITIAL_GUARD_CREDIT,
-                    spent_credit: 0,
+                    spentCredit: 0,
                     commission: 0
                 }, function (a) {
                     req.flash('info', 'Guard created');

@@ -23,6 +23,7 @@ block content
                                     th Email
                                     th Phone
                                     th Credit
+                                    th Spent Credit
                                     th Commission
                                     th Actions
                             tbody
@@ -42,10 +43,11 @@ block content
                                             else
                                                 =0
                                         td
-                                            if val.commission
-                                                =val.commission
+                                            if val.spentCredit
+                                                =val.spentCredit
                                             else
                                                 =0
+                                        td= 0.25
                                         td(style='text-align:center')
                                             a.btn.btn-xs.btn-info(type='button',
                                             href='/credit/' + index + '/' + val.credit + '/add') Credit

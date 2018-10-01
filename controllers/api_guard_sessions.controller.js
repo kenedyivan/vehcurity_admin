@@ -1,12 +1,14 @@
 let admin = require('../config/firebase_config.js');
 let cron = require('node-cron');
 let dbConnection = require('../config/db_config');
+let io = require('../socketing/host_socket');
+let updateGuardCredit = require('../business_logic/update_guard_credit');
 
 module.exports = {
-
     tasks: {},
 
     create_guard_session: function (req, res) {
+        let $this = this;
         let guardId = req.params.guardId;
         let ownerId = req.params.ownerId;
         let duration = req.params.duration;
@@ -34,7 +36,7 @@ module.exports = {
 
         console.log("PaymentType " + paymentType);
         if (paymentType === "cash") {
-            this.submitCashPayment(guardSessionData, requestKey);
+            $this.submitCashPayment(guardSessionData, requestKey);
         }
 
         let ref = admin.database().ref();
@@ -51,8 +53,8 @@ module.exports = {
                 let guardToken = snapshot.val()[guardId].token;
                 let ownerToken = snapshot.val()[ownerId].token;
 
-                this.startGuardCounter(guardToken, duration); //Starts guard counter
-                this.startOwnerCounter(ownerToken, duration, guardId, totalCost); //Starts owner counter
+                $this.startGuardCounter(guardToken, duration); //Starts guard counter
+                $this.startOwnerCounter(ownerToken, duration, guardId, totalCost); //Starts owner counter
 
                 let guards = ref.child('GuardsInformation');
                 guards.child(guardId).once('value')
@@ -61,7 +63,7 @@ module.exports = {
                         let hours = timeInMinutes / 60;
                         let minutes = timeInMinutes % 60;
 
-                        this.logNotification(snap.val().avatar, snap.val().name +
+                        $this.logNotification(snap.val().avatar, snap.val().name +
                             " Started a guard session of " + Math.round(hours) + " hrs and " + minutes + " mins");
                     });
 
@@ -81,13 +83,13 @@ module.exports = {
         task = cron.schedule(cronString, function () {
             ///todo Create the guarding object from here
             console.log('running a task for ' + taskId + ' :' + cronString);
-            this.destroyTask(taskId) //Destroys task
+            $this.destroyTask(taskId) //Destroys task
         }, false);
         task.start();
 
-        this.tasks[taskId] = task;
-        this.logTaskToDB(taskId, guardId, "New task created", 0);
-        console.log("Tasks: ", this.tasks);
+        $this.tasks[taskId] = task;
+        $this.logTaskToDB(taskId, guardId, "New task created", 0);
+        console.log("Tasks: ", $this.tasks);
         res.send("Task " + taskId + " started :" + cronString);
     },
 
@@ -227,7 +229,7 @@ module.exports = {
                         data.status = d.status;
                         data.ink = d.ink;
 
-                        io.emit('task_created', data);
+                        //io.emit('task_created', data);
                     });
 
             });
@@ -239,7 +241,12 @@ module.exports = {
         return inkArray[Math.floor(Math.random() * inkArray.length)];
     },
 
+    updateGuardSpentCredit: function (session) {
+        updateGuardCredit.processUpdateGuardCredit(session);
+    },
+
     destroyTask: function (taskId) {
+        let $this = this;
         if (this.tasks[taskId]) {
             this.tasks[taskId].destroy();
             delete this.tasks[taskId];
@@ -258,10 +265,13 @@ module.exports = {
 
                     console.log("Delete key: " + key + " Status " + status);
 
+                    //Updates the session status to complete
                     let sessionStatusUpdate = {};
                     sessionStatusUpdate.status = "1";
-
                     guardSession.child(taskId).update(sessionStatusUpdate);
+
+                    //update guard spent credit
+                    $this.updateGuardSpentCredit(session);
 
                     console.log("Task " + taskId + " Destroyed");
                     //Notify guard and owner
@@ -270,14 +280,14 @@ module.exports = {
                         let guardToken = snapshot.val()[guardId].token;
                         let ownerToken = snapshot.val()[ownerId].token;
 
-                        this.endGuardCounter(guardToken);//Ends guard counter
-                        this.endOwnerCounter(ownerToken);//Ends owner counter
-                        this.inactivateGuard(guardId);
+                        $this.endGuardCounter(guardToken);//Ends guard counter
+                        $this.endOwnerCounter(ownerToken);//Ends owner counter
+                        $this.inactivateGuard(guardId);
 
                         let guards = ref.child('GuardsInformation');
                         guards.child(guardId).once('value')
                             .then(function (snap) {
-                                this.logNotification("/vehc_images/shield.png", snap.val().name + " Ended a guard session");
+                                $this.logNotification("/vehc_images/shield.png", snap.val().name + " Ended a guard session");
                             });
 
 
@@ -286,13 +296,13 @@ module.exports = {
                         console.log("fcm tokens data error", error);
                     });
 
-                    console.log("Tasks: ", this.tasks);
+                    console.log("Tasks: ", $this.tasks);
 
                 });
 
         } else {
             console.log("No such task created");
-            console.log("Tasks: ", this.tasks);
+            console.log("Tasks: ", $this.tasks);
         }
 
     },
