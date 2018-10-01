@@ -42,7 +42,7 @@ block content
                                         td= val.licenseNumber
                                         td
                                             //a.btn.btn-danger(type='button', href='/owners/' + index + '/delete') Delete
-                                            a.btn.btn-danger(type='button',
+                                            a.btn.btn-xs.btn-danger(type='button',
                                             onclick='showOwnerModal(' + JSON.stringify(index) + ',' +
                                             JSON.stringify(val.firstName + ' ' + val.lastName) + ')') Delete
                     else

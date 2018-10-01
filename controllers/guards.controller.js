@@ -1,4 +1,5 @@
 let admin = require('../config/firebase_config.js');
+const INITIAL_GUARD_CREDIT = 14;
 
 module.exports = {
     get_guards: function (req, res) {
@@ -174,7 +175,9 @@ module.exports = {
                     email: email,
                     phone: phone,
                     password: password,
-                    credit: 0
+                    credit: INITIAL_GUARD_CREDIT,
+                    spent_credit: 0,
+                    commission: 0
                 }, function (a) {
                     req.flash('info', 'Guard created');
                     res.redirect('/guards');

@@ -9,10 +9,9 @@ block content
                     |
                     |
                     = size
-                .col-md-12.button_set_one.three.agile_info_shadow
-                    a.btn.btn-sm.btn-primary.btn-flat.btn-pri(type='button', href="/guards/create")
-                        i.fa.fa-plus(aria-hidden='true')
-                        |  Add guard
+                .col-md-12.three.agile_info_shadow
+                    a.btn.btn-primary(type='button', href="/guards/create")
+                        | Add guard
                 .table-responsive.bs-example.widget-shadow
                     // h4 Responsive Table:
                     if size > 0
@@ -24,6 +23,7 @@ block content
                                     th Email
                                     th Phone
                                     th Credit
+                                    th Commission
                                     th Actions
                             tbody
                                 each val, index in guards
@@ -41,15 +41,23 @@ block content
                                                 =val.credit
                                             else
                                                 =0
+                                        td
+                                            if val.commission
+                                                =val.commission
+                                            else
+                                                =0
                                         td(style='text-align:center')
-                                            a.btn.btn-info(type='button', href='/credit/' + index + '/' + val.credit + '/add') Credit
+                                            a.btn.btn-xs.btn-info(type='button',
+                                            href='/credit/' + index + '/' + val.credit + '/add') Credit
                                             |
                                             |
-                                            a.btn.btn-warning(type='button', href='/guards/' + index + '/edit') Edit
+                                            a.btn.btn-xs.btn-warning(type='button',
+                                            href='/guards/' + index + '/edit') Edit
                                             |
                                             |
-                                            a#delete.btn.btn-danger(type='button',
-                                            onclick='showModal(' + JSON.stringify(index) + ',' + JSON.stringify(val.name) + ')') Delete
+                                            a#delete.btn.btn-xs.btn-danger(type='button',
+                                            onclick='showModal(' + JSON.stringify(index) + ',' +
+                                            JSON.stringify(val.name) + ')') Delete
                     else
                         h4.title1 No guards found!
 
