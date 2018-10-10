@@ -2,12 +2,14 @@ let admin = require('../config/firebase_config.js');
 let cron = require('node-cron');
 let dbConnection = require('../config/db_config');
 let io = require('../socketing/host_socket');
-let updateGuardCredit = require('../business_logic/update_guard_credit');
+let payGuardFromCash = require('../business_logic/pay_guard_from_cash');
+let payGuardFromCredit = require('../business_logic/pay_guard_from_credit');
 
 module.exports = {
     tasks: {},
 
     create_guard_session: function (req, res) {
+        console.log("Fuck");
         let $this = this;
         let guardId = req.params.guardId;
         let ownerId = req.params.ownerId;
@@ -21,8 +23,7 @@ module.exports = {
         let day = req.params.day;
         let month = req.params.month;
         let requestKey = req.params.requestKey;
-        let paymentType = req.params.paymentType;
-
+        let requestCommitKey = req.params.requestCommitKey;
 
         let guardSessionData = {
             guard: guardId,
@@ -34,11 +35,34 @@ module.exports = {
             status: status
         };
 
-        console.log("PaymentType " + paymentType);
-        if (paymentType === "cash") {
-            $this.submitCashPayment(guardSessionData, requestKey);
+        let time = {
+            minute:minute,
+            hour: hour,
+            day:day,
+            month:month,
+        };
+
+        /*console.log("PaymentType " + paymentType);
+        if (paymentType === 'cash') {
+            //$this.submitCashPayment(guardSessionData, requestKey);
+            guardSessionData.paymentMethod = 'cash';
+        } else if (paymentType === 'credit') {
+            guardSessionData.paymentMethod = 'credit';
+        }*/
+
+        if (requestCommitKey === null || requestCommitKey === '') {
+            console.log("No request commit key submitted");
+            res.send("No request commit key submitted");
+        } else {
+            console.log("Commit key " + requestCommitKey);
+            guardSessionData.requestCommitKey = requestCommitKey;
+            res.send(this.createGuardSession(guardSessionData, time));
         }
 
+
+    },
+    createGuardSession: function (guardSessionData, time) {
+        let $this = this;
         let ref = admin.database().ref();
         let guardSession = ref.child('GuardSessions');
 
@@ -50,16 +74,20 @@ module.exports = {
         ref.update(updates, function (a) {
             let fcmTokens = ref.child('FcmTokens');
             fcmTokens.once('value').then(function (snapshot) {
-                let guardToken = snapshot.val()[guardId].token;
-                let ownerToken = snapshot.val()[ownerId].token;
+                let guardToken = snapshot.val()[guardSessionData.guard].token;
+                let ownerToken = snapshot.val()[guardSessionData.owner].token;
 
-                $this.startGuardCounter(guardToken, duration); //Starts guard counter
-                $this.startOwnerCounter(ownerToken, duration, guardId, totalCost); //Starts owner counter
+                console.log("Gtoken "+guardToken);
+                console.log("Otoken "+ownerToken);
+
+                $this.startGuardCounter(guardToken, guardSessionData.duration); //Starts guard counter
+                $this.startOwnerCounter(ownerToken, guardSessionData.duration,
+                    guardSessionData.guard, guardSessionData.totalCost); //Starts owner counter
 
                 let guards = ref.child('GuardsInformation');
-                guards.child(guardId).once('value')
+                guards.child(guardSessionData.guard).once('value')
                     .then(function (snap) {
-                        let timeInMinutes = parseInt(duration);
+                        let timeInMinutes = parseInt(guardSessionData.duration);
                         let hours = timeInMinutes / 60;
                         let minutes = timeInMinutes % 60;
 
@@ -74,11 +102,12 @@ module.exports = {
             });
         });
 
-        this.activateGuard(guardId);
+        this.activateGuard(guardSessionData.guard);
 
         let taskId = newGuardSessionKey;
         let task;
-        let cronString = minute + ' ' + hour + ' ' + day + ' ' + month + ' *';
+        let cronString = time.minute + ' ' + time.hour + ' ' +
+            time.day + ' ' + time.month + ' *';
         console.log('Cron: ', cronString);
         task = cron.schedule(cronString, function () {
             ///todo Create the guarding object from here
@@ -88,10 +117,11 @@ module.exports = {
         task.start();
 
         $this.tasks[taskId] = task;
-        $this.logTaskToDB(taskId, guardId, "New task created", 0);
+        $this.logTaskToDB(taskId, guardSessionData.guard, "New task created", 0);
         console.log("Tasks: ", $this.tasks);
-        res.send("Task " + taskId + " started :" + cronString);
-    },
+        return "Task " + taskId + " started :" + cronString;
+    }
+    ,
 
     submitCashPayment: function (guardSessionData, requestKey) {
         console.log("Guard session ", guardSessionData);
@@ -241,8 +271,23 @@ module.exports = {
         return inkArray[Math.floor(Math.random() * inkArray.length)];
     },
 
+    //Credits guard account after guard session
     updateGuardSpentCredit: function (session) {
-        updateGuardCredit.processUpdateGuardCredit(session);
+        let ref = admin.database().ref();
+        let requestCommits = ref.child('RequestCommits');
+        requestCommits.child(session.requestCommitKey).once('value')
+            .then(function (snap) {
+                let key = snap.key;
+                let commit = snap.val();
+                let paymentMethod = commit.paymentMethod;
+
+                if (paymentMethod === 'cash') {
+                    payGuardFromCash.processUpdateGuardCredit(session);
+                } else if (paymentMethod === 'credit') {
+                    payGuardFromCredit.processUpdateGuardCredit(session);
+                }
+            });
+
     },
 
     destroyTask: function (taskId) {

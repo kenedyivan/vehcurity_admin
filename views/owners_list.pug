@@ -25,6 +25,7 @@ block content
                                     th Brand
                                     th Model
                                     th License No.
+                                    th Credit
                                     th Actions
                             tbody
                                 each val, index in owners
@@ -41,7 +42,15 @@ block content
                                         td= val.model
                                         td= val.licenseNumber
                                         td
-                                            //a.btn.btn-danger(type='button', href='/owners/' + index + '/delete') Delete
+                                            if val.credit
+                                                =val.credit
+                                            else
+                                                =0
+                                        td
+                                            a.btn.btn-xs.btn-info(type='button',
+                                            href='/owner/credit/' + index + '/' + val.credit + '/add') Credit
+                                            |
+                                            |
                                             a.btn.btn-xs.btn-danger(type='button',
                                             onclick='showOwnerModal(' + JSON.stringify(index) + ',' +
                                             JSON.stringify(val.firstName + ' ' + val.lastName) + ')') Delete

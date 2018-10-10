@@ -39,16 +39,16 @@ block content
                                         td= val.phone
                                         td
                                             if val.credit
-                                                =val.credit
+                                                =parseFloat(val.credit).toFixed(2)
                                             else
                                                 =0
                                         td
                                             if val.spentCredit
-                                                =val.spentCredit
+                                                =parseFloat(val.spentCredit).toFixed(2)
                                             else
                                                 =0
                                         td= 0.25
-                                        td(style='text-align:center')
+                                        td
                                             a.btn.btn-xs.btn-info(type='button',
                                             href='/credit/' + index + '/' + val.credit + '/add') Credit
                                             |

@@ -38,8 +38,10 @@ let authRouter = require('./routes/auth.route');
 let notificationRouter = require('./routes/notifications.route');
 let owners_payment_methods = require('./routes/owners_payment_method.route');
 let guardsCreditRouter = require('./routes/guards_credit.route');
+let ownersCreditRouter = require('./routes/owners_credit.route');
 let testRouter = require('./routes/test_route');
-let cashCreditingRouter = require('./routes/cash_crediting.route');
+let cashPaymentRouter = require('./routes/cash_payment_test.route');
+let creditPaymentRouter = require('./routes/credit_payment_test.route');
 
 
 // view engine setup
@@ -70,9 +72,11 @@ app.use('/auth', authRouter);
 app.use('/notifications', notificationRouter);
 app.use('/payment_methods', owners_payment_methods);
 app.use('/credit', guardsCreditRouter);
+app.use('/owner/credit', ownersCreditRouter);
 app.use('/test', testRouter);
 app.use('/guard-sessions-api', guardSessionApiRouter);
-app.use('/pay-cash', cashCreditingRouter);
+app.use('/pay-cash', cashPaymentRouter);
+app.use('/pay-credit', creditPaymentRouter);
 
 app.get('/', function (req, res) {
     res.redirect('/dashboard');

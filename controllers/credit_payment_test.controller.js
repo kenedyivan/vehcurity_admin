@@ -1,5 +1,5 @@
 let admin = require('../config/firebase_config.js');
-let crediting = require('../business_logic/update_guard_credit');
+let crediting = require('../business_logic/pay_guard_from_credit');
 module.exports = {
     payGuard: function (req, res) {
         let taskId = req.params.sessionId;
