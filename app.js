@@ -1,7 +1,7 @@
 let express = require('express');
 let path = require('path');
 let cookieParser = require('cookie-parser');
-let logger = require('morgan');
+let morgan = require('morgan');
 let bodyParser = require('body-parser');
 let app = express();
 let server = require('http').Server(app);
@@ -11,6 +11,18 @@ let flash = require('connect-flash');
 const cookieSession = require('cookie-session');
 let hotSocket = require('./socketing/host_socket');
 let authCheck = require('./custom_middlewares/auth_check');
+let logger = require('./logger/logger');
+let fs = require('fs');
+
+//Sets proper timezone to Morgan time stamp
+morgan.token('date', function () {
+    let p = new Date().toString().replace(/[A-Z]{3}\+/, '+').split(/ /);
+    return (p[2] + '/' + p[1] + '/' + p[3] + ':' + p[4] + ' ' + p[5]);
+});
+
+// create a write stream (in append mode)
+let accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
+
 
 hotSocket.setSocket(io);
 
@@ -49,7 +61,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.set('view engine', 'pug');
 
-app.use(logger('dev'));
+app.use(morgan('combined', {stream: accessLogStream}));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
@@ -80,6 +92,11 @@ app.use('/pay-credit', creditPaymentRouter);
 
 app.get('/', function (req, res) {
     res.redirect('/dashboard');
+});
+
+app.get('/logging', function(req, res){
+    logger.info("My awesome log", {label: "myLogger"});
+   res.send("Logging nicely");
 });
 
 

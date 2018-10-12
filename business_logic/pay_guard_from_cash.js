@@ -1,8 +1,14 @@
 let admin = require('../config/firebase_config.js');
 let credit = require('./guard_credit');
+const log = require('../logger/logger');
+const path = require('path');
+
+const moduleName = path.basename(__filename, '.js');
 
 module.exports = {
     processUpdateGuardCredit: function (guardSession) {
+        log(moduleName,'info',`Guard session data ${guardSession}`);
+
         let $this = this;
         let guardId = guardSession.guard;
         //Finds guard data
@@ -32,6 +38,8 @@ module.exports = {
             });
 
         });
+
+        log(moduleName,'info',`Updated credits for guard: ${guardId}`);
 
         return "credits updated!";
     },

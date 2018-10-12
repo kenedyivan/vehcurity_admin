@@ -1,7 +1,14 @@
 let admin = require('../config/firebase_config.js');
 let credit = require('./owner_credit');
+const logger = require('../logger/logger');
+const path = require('path');
+
+const moduleName = path.basename(__filename, '.js');
+
 module.exports = {
     processUpdateGuardCredit: function (guardSession) {
+        log(moduleName, 'info', `Guard session data ${guardSession}`);
+
         let $this = this;
         let guardId = guardSession.guard;
         let ownerId = guardSession.owner;
@@ -40,6 +47,8 @@ module.exports = {
             });
 
         });
+
+        log(moduleName, 'info', `Credits update for guard: ${guardId} and owner: ${ownerId}`);
 
         return "Credit payment issued";
     },

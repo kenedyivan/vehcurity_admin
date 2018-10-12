@@ -4,12 +4,20 @@ let dbConnection = require('../config/db_config');
 let io = require('../socketing/host_socket');
 let payGuardFromCash = require('../business_logic/pay_guard_from_cash');
 let payGuardFromCredit = require('../business_logic/pay_guard_from_credit');
+const path = require('path');
+let log = require('../logger/logger');
+
+
+const moduleName = path.basename(__filename, '.js');
 
 module.exports = {
     tasks: {},
 
+
     create_guard_session: function (req, res) {
-        console.log("Fuck");
+
+        log(moduleName, 'info', `New Guard request data: ${req.params}`);
+
         let $this = this;
         let guardId = req.params.guardId;
         let ownerId = req.params.ownerId;
@@ -36,10 +44,10 @@ module.exports = {
         };
 
         let time = {
-            minute:minute,
+            minute: minute,
             hour: hour,
-            day:day,
-            month:month,
+            day: day,
+            month: month,
         };
 
         /*console.log("PaymentType " + paymentType);
@@ -51,10 +59,15 @@ module.exports = {
         }*/
 
         if (requestCommitKey === null || requestCommitKey === '') {
-            console.log("No request commit key submitted");
+
+            log(moduleName, 'debug', 'No request commit key submitted');
+
             res.send("No request commit key submitted");
+
         } else {
-            console.log("Commit key " + requestCommitKey);
+
+            log(moduleName, 'info', `Got commit key:  ${requestCommitKey}`);
+
             guardSessionData.requestCommitKey = requestCommitKey;
             res.send(this.createGuardSession(guardSessionData, time));
         }
@@ -62,12 +75,14 @@ module.exports = {
 
     },
     createGuardSession: function (guardSessionData, time) {
+        log(moduleName, 'info', `Got new guard session data: ${JSON.stringify(guardSessionData)}`);
+
         let $this = this;
         let ref = admin.database().ref();
         let guardSession = ref.child('GuardSessions');
 
         let newGuardSessionKey = guardSession.push().key;
-        console.log("New session key: ", newGuardSessionKey);
+        log(moduleName, 'info', `Created new session key ${newGuardSessionKey}`);
 
         let updates = {};
         updates['/GuardSessions/' + newGuardSessionKey] = guardSessionData;
@@ -77,8 +92,7 @@ module.exports = {
                 let guardToken = snapshot.val()[guardSessionData.guard].token;
                 let ownerToken = snapshot.val()[guardSessionData.owner].token;
 
-                console.log("Gtoken "+guardToken);
-                console.log("Otoken "+ownerToken);
+                log(moduleName, 'debug', `Retrieved guard device token: ${guardToken} and owner device token: ${ownerToken}`);
 
                 $this.startGuardCounter(guardToken, guardSessionData.duration); //Starts guard counter
                 $this.startOwnerCounter(ownerToken, guardSessionData.duration,
@@ -91,14 +105,18 @@ module.exports = {
                         let hours = timeInMinutes / 60;
                         let minutes = timeInMinutes % 60;
 
+                        log(moduleName, 'info', `${snap.val().avatar} ${snap.val().name} Starting a guard session of ${Math.round(hours)} hrs and ${minutes} mins`);
+
                         $this.logNotification(snap.val().avatar, snap.val().name +
                             " Started a guard session of " + Math.round(hours) + " hrs and " + minutes + " mins");
+
+                        log(moduleName, 'info', `${snap.val().avatar} ${snap.val().name} Started a guard session of ${Math.round(hours)} hrs and ${minutes} mins`);
                     });
 
 
-                console.log("guard:: " + guardToken + " owner:: " + ownerToken);
+                log(moduleName, 'info', `Guard device token ${guardToken}, Owner device token ${ownerToken}`);
             }).catch(function (error) {
-                console.log("fcm tokens data error", error);
+                log(moduleName, 'error', `Fcm tokens data error: ${error}`);
             });
         });
 
@@ -108,17 +126,19 @@ module.exports = {
         let task;
         let cronString = time.minute + ' ' + time.hour + ' ' +
             time.day + ' ' + time.month + ' *';
-        console.log('Cron: ', cronString);
+
+        log(moduleName, 'debug', `Cron string: ${cronString}`);
+
         task = cron.schedule(cronString, function () {
             ///todo Create the guarding object from here
-            console.log('running a task for ' + taskId + ' :' + cronString);
+            log(moduleName, 'warning', `Running a task for ${taskId}: Cron string ${cronString}`);
             $this.destroyTask(taskId) //Destroys task
         }, false);
         task.start();
 
         $this.tasks[taskId] = task;
         $this.logTaskToDB(taskId, guardSessionData.guard, "New task created", 0);
-        console.log("Tasks: ", $this.tasks);
+        log(moduleName, 'warning', `Tasks ${$this.tasks}`);
         return "Task " + taskId + " started :" + cronString;
     }
     ,
@@ -161,6 +181,7 @@ module.exports = {
     },
 
     startGuardCounter: function (guardToken, duration) {
+
         let message = {
             notification: {
                 title: "starting",
@@ -169,11 +190,13 @@ module.exports = {
             token: guardToken
         };
 
+        log(moduleName, 'info', `Starting guard counter ${JSON.stringify(message)}`);
+
 
         admin.messaging().send(message).then(function (response) {
-            console.log('Successfully sent message:', response);
+            log(moduleName, 'info', `Sent start guard counter message ${response}`);
         }).catch(function (error) {
-            console.log('Error sending message:', error);
+            log(moduleName, 'error', `Error sending start guard counter message: ${error}`);
         });
     },
 
@@ -187,11 +210,13 @@ module.exports = {
             token: ownerToken
         };
 
+        log(moduleName, 'info', `Starting owner counter ${JSON.stringify(message)}`);
+
 
         admin.messaging().send(message).then(function (response) {
-            console.log('Successfully sent message:', response);
+            log(moduleName, 'info', `Sent start owner counter message ${response}`);
         }).catch(function (error) {
-            console.log('Error sending message:', error);
+            log(moduleName, 'error', `Error sending start owner counter message: ${error}`);
         });
     },
 
@@ -203,11 +228,13 @@ module.exports = {
             createdAt: new Date().toLocaleString()
         };
 
+        log(moduleName, 'info', `Creating session notification ${JSON.stringify(notificationData)}`);
+
         let ref = admin.database().ref();
         let notifications = ref.child('Notifications');
 
         let newNotificationKey = notifications.push().key;
-        console.log("New notification key: ", newNotificationKey);
+        log(moduleName, 'debug', `New notification key: ${newNotificationKey}`);
 
         let updates = {};
         updates['/Notifications/' + newNotificationKey] = notificationData;
@@ -218,6 +245,7 @@ module.exports = {
     },
 
     activateGuard: function (guardId) {
+        log(moduleName, 'info', `Activate guard ${guardId}`);
         let ref = admin.database().ref();
 
         let guards = ref.child('GuardsInformation');
@@ -233,18 +261,22 @@ module.exports = {
                 let aGuards = {};
                 aGuards['/ActiveGuards/' + guardId] = activeGuardData;
                 ref.update(aGuards).then(function (snap) {
-                    console.log("Active: ", snap);
+                    log(moduleName, 'debug', `Activated guard ${guardId}`);
                 });
             });
     },
 
     logTaskToDB: function (taskId, agentId, message, status) {
         let ink = this.inkRandom();
-        dbConnection.query("INSERT INTO task_logs(fire_ID,created_by,message,ink) " +
-            "VALUES('" + taskId + "','" + agentId + "','" + message + "','" + ink + "')",
+        let queryString = "INSERT INTO task_logs(fire_ID,created_by,message,ink) " +
+            "VALUES('" + taskId + "','" + agentId + "','" + message + "','" + ink + "')";
+
+        log(moduleName, 'info', `Creating task in database ${queryString}`);
+
+        dbConnection.query(queryString,
             function (err, rows, fields) {
                 if (err) throw err;
-                console.log('Created task', rows);
+                log(moduleName, 'info', `Created task record in database ${JSON.stringify(rows)}`);
 
                 dbConnection.query("SELECT * FROM task_logs WHERE id ='" + rows.insertId + "' ",
                     function (err, rows, fields) {
@@ -258,6 +290,9 @@ module.exports = {
                         data.message = d.message;
                         data.status = d.status;
                         data.ink = d.ink;
+
+
+                        log(moduleName, 'debug', `Fetching task from database ${JSON.stringify(d)}`);
 
                         //io.emit('task_created', data);
                     });
@@ -273,6 +308,9 @@ module.exports = {
 
     //Credits guard account after guard session
     updateGuardSpentCredit: function (session) {
+
+        log(moduleName, 'info', `Updating credit record ${JSON.stringify(session)}`);
+
         let ref = admin.database().ref();
         let requestCommits = ref.child('RequestCommits');
         requestCommits.child(session.requestCommitKey).once('value')
@@ -291,6 +329,8 @@ module.exports = {
     },
 
     destroyTask: function (taskId) {
+
+        log(moduleName, 'info', `Destorying task ${taskId}`);
         let $this = this;
         if (this.tasks[taskId]) {
             this.tasks[taskId].destroy();
@@ -308,7 +348,7 @@ module.exports = {
                     let ownerId = session.owner;
                     let status = session.status;
 
-                    console.log("Delete key: " + key + " Status " + status);
+                    log(moduleName, 'info', `Delete key ${key}, Status ${status}`);
 
                     //Updates the session status to complete
                     let sessionStatusUpdate = {};
@@ -318,7 +358,8 @@ module.exports = {
                     //update guard spent credit
                     $this.updateGuardSpentCredit(session);
 
-                    console.log("Task " + taskId + " Destroyed");
+                    log(moduleName, 'info', `Destroyed task ${taskId}`);
+
                     //Notify guard and owner
                     let fcmTokens = ref.child('FcmTokens');
                     fcmTokens.once('value').then(function (snapshot) {
@@ -333,21 +374,21 @@ module.exports = {
                         guards.child(guardId).once('value')
                             .then(function (snap) {
                                 $this.logNotification("/vehc_images/shield.png", snap.val().name + " Ended a guard session");
+
+                                log(moduleName, 'info', `Notification: Guard session for ${snap.val().name}`);
                             });
 
-
-                        console.log("guard:: " + guardToken + " owner:: " + ownerToken);
+                        log(moduleName, 'info', `Guard device token: ${guardToken}, Owner device token ${ownerToken}`);
                     }).catch(function (error) {
-                        console.log("fcm tokens data error", error);
+                        log(moduleName, 'error', `Fcm tokens data error: ${error}`);
                     });
 
-                    console.log("Tasks: ", $this.tasks);
+                    log(moduleName, 'warning', `Tasks ${$this.tasks}`);
 
                 });
 
         } else {
-            console.log("No such task created");
-            console.log("Tasks: ", $this.tasks);
+            log(moduleName, 'error', `No such task created ${taskId}`);
         }
 
     },
@@ -361,11 +402,13 @@ module.exports = {
             token: guardToken
         };
 
+        log(moduleName, 'info', `Sending end guard counter message: ${message}`);
+
 
         admin.messaging().send(message).then(function (response) {
-            console.log('Successfully sent message:', response);
+            log(moduleName, 'info', `Successfully send message ${response}`);
         }).catch(function (error) {
-            console.log('Error sending message:', error);
+            log(moduleName, 'error', `Error sending message: ${error}`);
         });
     },
 
@@ -378,20 +421,24 @@ module.exports = {
             token: ownerToken
         };
 
+        log(moduleName, 'info', `Sending end owner counter message: ${message}`);
+
 
         admin.messaging().send(message).then(function (response) {
             console.log('Successfully sent message:', response);
+            log(moduleName, 'info', `Successfully send message ${response}`);
         }).catch(function (error) {
-            console.log('Error sending message:', error);
+            log(moduleName, 'error', `Error sending message: ${error}`);
         });
     },
 
     inactivateGuard: function (guardId) {
+        log(moduleName, 'info', 'Making Guard available again');
         let ref = admin.database().ref();
         let activeGuard = ref.child('ActiveGuards');
         activeGuard.child(guardId)
             .remove().then(function (snap) {
-            console.log("Guard inactivated: ", snap);
+            log(moduleName, 'info', 'Guard is available again');
         });
     }
 
