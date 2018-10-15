@@ -116,7 +116,7 @@ module.exports = {
 
                 log(moduleName, 'info', `Guard device token ${guardToken}, Owner device token ${ownerToken}`);
             }).catch(function (error) {
-                log(moduleName, 'error', `Fcm tokens data error: ${error}`);
+                log(moduleName, 'error', `Fcm tokens data error: ${JSON.stringify(error)}`);
             });
         });
 
@@ -138,7 +138,7 @@ module.exports = {
 
         $this.tasks[taskId] = task;
         $this.logTaskToDB(taskId, guardSessionData.guard, "New task created", 0);
-        log(moduleName, 'warning', `Tasks ${$this.tasks}`);
+        //log(moduleName, 'warning', `Tasks ${JSON.stringify($this.tasks)}`);
         return "Task " + taskId + " started :" + cronString;
     }
     ,
@@ -194,7 +194,7 @@ module.exports = {
 
 
         admin.messaging().send(message).then(function (response) {
-            log(moduleName, 'info', `Sent start guard counter message ${response}`);
+            log(moduleName, 'info', `Sent start guard counter message ${JSON.stringify(response)}`);
         }).catch(function (error) {
             log(moduleName, 'error', `Error sending start guard counter message: ${error}`);
         });
@@ -425,8 +425,7 @@ module.exports = {
 
 
         admin.messaging().send(message).then(function (response) {
-            console.log('Successfully sent message:', response);
-            log(moduleName, 'info', `Successfully send message ${response}`);
+            log(moduleName, 'info', `Successfully sent message ${response}`);
         }).catch(function (error) {
             log(moduleName, 'error', `Error sending message: ${error}`);
         });

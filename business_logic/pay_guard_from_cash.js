@@ -7,7 +7,7 @@ const moduleName = path.basename(__filename, '.js');
 
 module.exports = {
     processUpdateGuardCredit: function (guardSession) {
-        log(moduleName,'info',`Guard session data ${guardSession}`);
+        log(moduleName,'info',`Guard session data ${JSON.stringify(guardSession)}`);
 
         let $this = this;
         let guardId = guardSession.guard;
