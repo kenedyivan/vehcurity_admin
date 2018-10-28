@@ -140,8 +140,95 @@ module.exports = {
         $this.logTaskToDB(taskId, guardSessionData.guard, "New task created", 0);
         //log(moduleName, 'warning', `Tasks ${JSON.stringify($this.tasks)}`);
         return "Task " + taskId + " started :" + cronString;
-    }
-    ,
+    },
+
+    stopGuardSession: function (req, res) {
+        let $this = this;
+        let taskId = '';
+
+        let requestCommitKey = req.params.requestCommitKey;
+
+        let ref = admin.database().ref().child('GuardSessions')
+            .orderByChild('requestCommitKey')
+            .equalTo(requestCommitKey)
+            //.limitToFirst(1)
+            .once('value')
+            .then(function (snap) {
+                console.log('GuardSession', snap.val());
+                console.log('Key', Object.keys(snap.val())[0]);
+
+                taskId = Object.keys(snap.val())[0];
+
+                log(moduleName, 'info', `Destorying task ${taskId}`);
+
+
+                if ($this.tasks[taskId]) {
+                    $this.tasks[taskId].destroy();
+                    delete $this.tasks[taskId];
+
+                    //getUserFcmTokens
+                    let ref = admin.database().ref();
+                    let guardSession = ref.child('GuardSessions');
+
+                    guardSession.child(taskId).once('value')
+                        .then(function (snap) {
+                            let key = snap.key;
+                            let session = snap.val();
+                            let guardId = session.guard;
+                            let ownerId = session.owner;
+                            let status = session.status;
+
+                            console.log('Session', session);
+
+                            log(moduleName, 'info', `Delete key ${key}, Status ${status}`);
+
+                            //Updates the session status to complete
+                            let sessionStatusUpdate = {};
+                            sessionStatusUpdate.status = "1";
+                            guardSession.child(taskId).update(sessionStatusUpdate);
+
+                            //update guard spent credit
+                            $this.updateGuardSpentCredit(session);
+
+                            log(moduleName, 'info', `Destroyed task ${taskId}`);
+
+                            //Notify guard
+                            let fcmTokens = ref.child('FcmTokens');
+                            fcmTokens.once('value').then(function (snapshot) {
+                                let guardToken = snapshot.val()[guardId].token;
+                                let ownerToken = snapshot.val()[ownerId].token;
+
+                                $this.endGuardCounter(guardToken);//Ends guard counter
+                                $this.endOwnerCounter(ownerToken);//Ends owner counter
+                                $this.inactivateGuard(guardId);
+
+                                let guards = ref.child('GuardsInformation');
+                                guards.child(guardId).once('value')
+                                    .then(function (snap) {
+                                        $this.logNotification("/vehc_images/shield.png", snap.val().name + " Ended a guard session");
+
+                                        log(moduleName, 'info', `Notification: Guard session for ${snap.val().name}`);
+                                    });
+
+                                log(moduleName, 'info', `Guard device token: ${guardToken}, Owner device token ${ownerToken}`);
+                            }).catch(function (error) {
+                                log(moduleName, 'error', `Fcm tokens data error: ${error}`);
+                            });
+
+                            log(moduleName, 'warning', `Tasks ${$this.tasks}`);
+
+
+                        });
+
+                } else {
+                    log(moduleName, 'error', `No such task created ${taskId}`);
+                    console.log('task does not exist');
+                }
+
+            });
+
+        res.send({ message: 'Task doesn\'t exist' });
+    },
 
     submitCashPayment: function (guardSessionData, requestKey) {
         console.log("Guard session ", guardSessionData);
@@ -205,7 +292,7 @@ module.exports = {
             notification: {
                 title: "starting",
                 body: "{\"duration\":" + "\"" + duration + "\",\"guardId\":\"" + guardId + "\",\"totalCost\":\"" + totalCost + "\"," +
-                "\"message\":\"guard session started\"}"
+                    "\"message\":\"guard session started\"}"
             },
             token: ownerToken
         };
@@ -437,8 +524,8 @@ module.exports = {
         let activeGuard = ref.child('ActiveGuards');
         activeGuard.child(guardId)
             .remove().then(function (snap) {
-            log(moduleName, 'info', 'Guard is available again');
-        });
+                log(moduleName, 'info', 'Guard is available again');
+            });
     }
 
 

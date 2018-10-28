@@ -14,6 +14,12 @@ module.exports = {
                 res.render('guard_requests_list', {requests: snap.val(), size: len});
 
             });
+    },
+
+    delete_all_requests: function(req, res){
+        var ref = admin.database().ref();
+        ref.child('Requests').remove();
+        res.send({message:'Delete requests'});
     }
 
 };

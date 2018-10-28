@@ -1,0 +1,45 @@
+2018-10-27T20:19:38.872Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LPrAUJxO35AOfgNiQne"}
+2018-10-28T05:43:34.164Z [Local] error: {"module":"api_guard_sessions.controller","message":"Fcm tokens data error: ReferenceError: ownerToken is not defined"}
+2018-10-28T05:52:25.076Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LPtDd7ulaS65xOq5uIY"}
+2018-10-28T05:57:27.423Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LPtEp29U6cwc0fkl-eS"}
+2018-10-28T06:00:28.139Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LPtFT_S-f7raZcolCGG"}
+2018-10-28T06:03:04.741Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LPtAXl2Ay6w_lbkPgxI"}
+2018-10-28T06:03:46.697Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LPtAXl2Ay6w_lbkPgxI"}
+2018-10-28T06:04:12.110Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LPtAXl2Ay6w_lbkPgxI"}
+2018-10-28T06:04:12.439Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LPtAXl2Ay6w_lbkPgxI"}
+2018-10-28T06:04:12.847Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LPtAXl2Ay6w_lbkPgxI"}
+2018-10-28T06:04:12.853Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LPtAXl2Ay6w_lbkPgxI"}
+2018-10-28T06:05:23.592Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LPtAXl2Ay6w_lbkPgxI"}
+2018-10-28T06:10:10.724Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LPtAXl2Ay6w_lbkPgxI"}
+2018-10-28T06:11:11.441Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LPtAXl2Ay6w_lbkPgxI"}
+2018-10-28T06:12:14.617Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LNlU9_0JgWjXLcNhjyE"}
+2018-10-28T06:12:56.893Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LNlU9_0JgWjXLcNhjyE"}
+2018-10-28T06:13:56.069Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LNlU9_0JgWjXLcNhjyE"}
+2018-10-28T06:15:02.933Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LNlU9_0JgWjXLcNhjyE"}
+2018-10-28T06:16:11.587Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LNlU9_0JgWjXLcNhjyE"}
+2018-10-28T06:48:14.375Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T06:49:04.263Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T06:50:24.812Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T06:51:53.102Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T06:53:12.615Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T06:53:24.714Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T06:53:48.229Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T06:55:28.032Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T06:56:34.212Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T06:56:49.712Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T07:01:01.197Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T07:01:13.154Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T07:02:28.977Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T07:03:02.805Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T07:05:29.707Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T07:05:53.340Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T07:07:08.105Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T07:08:15.002Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T07:08:35.076Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created "}
+2018-10-28T07:12:53.982Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LPtFZ5BD1ogWMBhLdhr"}
+2018-10-28T07:19:50.953Z [Local] error: {"module":"api_guard_sessions.controller","message":"Error sending start guard counter message: Error: fcm.googleapis.com network timeout. Please try again."}
+2018-10-28T07:19:50.954Z [Local] error: {"module":"api_guard_sessions.controller","message":"Error sending start owner counter message: Error: fcm.googleapis.com network timeout. Please try again."}
+2018-10-28T07:21:25.591Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LOSON5NKFxBqlrJQQo9"}
+2018-10-28T07:21:44.573Z [Local] error: {"module":"api_guard_sessions.controller","message":"No such task created -LOSON5NKFxBqlrJQQo9"}
+2018-10-28T07:46:57.131Z [Local] error: {"module":"api_guard_sessions.controller","message":"Fcm tokens data error: ReferenceError: ownerToken is not defined"}
+2018-10-28T07:49:21.098Z [Local] error: {"module":"api_guard_sessions.controller","message":"Fcm tokens data error: ReferenceError: ownerToken is not defined"}

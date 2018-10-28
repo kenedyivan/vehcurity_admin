@@ -7,4 +7,9 @@ router.get('/', function(req, res,next) {
     GuardRequestsController.get_guard_requests(req,res);
 });
 
+/* Delete all guard requests */
+router.get('/delete-all', function(req, res,next) {
+    GuardRequestsController.delete_all_requests(req,res);
+});
+
 module.exports = router;

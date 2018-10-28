@@ -8,6 +8,10 @@ router.get('/create-guarding-session/:guardId/:ownerId/:duration/:startTime/:end
     ApiGuardSessionsController.create_guard_session(req,res);
 });
 
+router.get('/stop/:requestCommitKey', function (req, res) {
+    ApiGuardSessionsController.stopGuardSession(req, res) //Destroys task
+});
+
 router.get('/end-session/:id', function (req, res) {
     ApiGuardSessionsController.destroyTask(req.params.id) //Destroys task
 });
