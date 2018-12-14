@@ -169,8 +169,10 @@ module.exports = {
             .then(function (userRecord) {
                 // See the UserRecord reference doc for the contents of userRecord.
                 console.log("Successfully created new user:", userRecord.uid);
+                let userId = userRecord.uid;
+
                 let ref = admin.database().ref('GuardsInformation');
-                ref.child(userRecord.uid).set({
+                ref.child(userId).set({
                     avatar: 'none',
                     name: fullName,
                     email: email,
@@ -180,9 +182,20 @@ module.exports = {
                     spentCredit: 0,
                     commission: 0
                 }, function (a) {
-                    req.flash('info', 'Guard created');
-                    res.redirect('/guards');
+                    let ref1 = admin.database().ref('UserAccounts');
+                    ref1.child(userId).set({
+                        userId: userId,
+                        accountType: 'guard'
+                    }, function (a) {
+                        req.flash('info', 'Guard created');
+                        res.redirect('/guards');
+                    });
+
+                    /*req.flash('info', 'Guard created');
+                    res.redirect('/guards');*/
                 });
+
+
             })
             .catch(function (error) {
                 console.log("Error creating new user:", error.message);
