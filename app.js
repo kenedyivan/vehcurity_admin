@@ -32,8 +32,8 @@ io.sockets.on('connection', function (socket) {
             "socket": socket.id
         };
 
-        /*console.log("socket size ", Object.keys(socketPool));
-        console.log("socket data " + socketPool);*/
+        console.log("socket size ", Object.keys(socketPool));
+        console.log("socket data " + socketPool);
     });
 
 

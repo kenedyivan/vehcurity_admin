@@ -94,3 +94,11 @@ TypeError: Cannot read property 'emit' of undefined
     at /home/ken/WebstormProjects/VechAdmin/node_modules/socket.io/lib/socket.js:513:12
     at _combinedTickCallback (internal/process/next_tick.js:131:7)
     at process._tickCallback (internal/process/next_tick.js:180:9)
+2018-12-18T22:23:34.500Z [Local] error: uncaughtException: Cannot read property 'emit' of undefined
+TypeError: Cannot read property 'emit' of undefined
+    at Socket.<anonymous> (/home/ken/WebstormProjects/VechAdmin/app.js:42:66)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at /home/ken/WebstormProjects/VechAdmin/node_modules/socket.io/lib/socket.js:513:12
+    at _combinedTickCallback (internal/process/next_tick.js:131:7)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
