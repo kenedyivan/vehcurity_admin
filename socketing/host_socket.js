@@ -28,5 +28,9 @@ module.exports = {
 
             });
         });
+
+        io.on('new message', function(){
+           console.log('I have received a new message');
+        });
     }
 };

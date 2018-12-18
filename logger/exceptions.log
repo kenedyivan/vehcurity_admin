@@ -1,0 +1,96 @@
+2018-12-18T18:12:19.933Z [Local] error: uncaughtException: Cannot read property 'emit' of undefined
+TypeError: Cannot read property 'emit' of undefined
+    at Socket.<anonymous> (/home/ken/WebstormProjects/VechAdmin/app.js:42:14)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at /home/ken/WebstormProjects/VechAdmin/node_modules/socket.io/lib/socket.js:513:12
+    at _combinedTickCallback (internal/process/next_tick.js:131:7)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+2018-12-18T19:36:17.423Z [Local] error: uncaughtException: Cannot read property 'emit' of undefined
+TypeError: Cannot read property 'emit' of undefined
+    at Socket.<anonymous> (/home/ken/WebstormProjects/VechAdmin/app.js:49:41)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at /home/ken/WebstormProjects/VechAdmin/node_modules/socket.io/lib/socket.js:513:12
+    at _combinedTickCallback (internal/process/next_tick.js:131:7)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+2018-12-18T19:37:34.960Z [Local] error: uncaughtException: Cannot read property 'emit' of undefined
+TypeError: Cannot read property 'emit' of undefined
+    at Socket.<anonymous> (/home/ken/WebstormProjects/VechAdmin/app.js:49:41)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at /home/ken/WebstormProjects/VechAdmin/node_modules/socket.io/lib/socket.js:513:12
+    at _combinedTickCallback (internal/process/next_tick.js:131:7)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+2018-12-18T19:42:15.474Z [Local] error: uncaughtException: Cannot read property 'emit' of undefined
+TypeError: Cannot read property 'emit' of undefined
+    at Socket.<anonymous> (/home/ken/WebstormProjects/VechAdmin/app.js:50:45)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at /home/ken/WebstormProjects/VechAdmin/node_modules/socket.io/lib/socket.js:513:12
+    at _combinedTickCallback (internal/process/next_tick.js:131:7)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+2018-12-18T19:47:55.161Z [Local] error: uncaughtException: io.sockets.socket is not a function
+TypeError: io.sockets.socket is not a function
+    at Socket.<anonymous> (/home/ken/WebstormProjects/VechAdmin/app.js:51:20)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at /home/ken/WebstormProjects/VechAdmin/node_modules/socket.io/lib/socket.js:513:12
+    at _combinedTickCallback (internal/process/next_tick.js:131:7)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+2018-12-18T20:37:58.211Z [Local] error: uncaughtException: io.sockets.socket is not a function
+TypeError: io.sockets.socket is not a function
+    at Socket.<anonymous> (/home/ken/WebstormProjects/VechAdmin/app.js:52:20)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at /home/ken/WebstormProjects/VechAdmin/node_modules/socket.io/lib/socket.js:513:12
+    at _combinedTickCallback (internal/process/next_tick.js:131:7)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+2018-12-18T20:40:02.926Z [Local] error: uncaughtException: io.sockets.socket is not a function
+TypeError: io.sockets.socket is not a function
+    at Socket.<anonymous> (/home/ken/WebstormProjects/VechAdmin/app.js:52:20)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at /home/ken/WebstormProjects/VechAdmin/node_modules/socket.io/lib/socket.js:513:12
+    at _combinedTickCallback (internal/process/next_tick.js:131:7)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+2018-12-18T20:46:22.333Z [Local] error: uncaughtException: io.sockets.socket is not a function
+TypeError: io.sockets.socket is not a function
+    at Socket.<anonymous> (/home/ken/WebstormProjects/VechAdmin/app.js:52:45)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at /home/ken/WebstormProjects/VechAdmin/node_modules/socket.io/lib/socket.js:513:12
+    at _combinedTickCallback (internal/process/next_tick.js:131:7)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+2018-12-18T20:48:54.175Z [Local] error: uncaughtException: io.sockets.socket is not a function
+TypeError: io.sockets.socket is not a function
+    at Socket.<anonymous> (/home/ken/WebstormProjects/VechAdmin/app.js:52:45)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at /home/ken/WebstormProjects/VechAdmin/node_modules/socket.io/lib/socket.js:513:12
+    at _combinedTickCallback (internal/process/next_tick.js:131:7)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+2018-12-18T20:58:25.725Z [Local] error: uncaughtException: Cannot read property 'emit' of undefined
+TypeError: Cannot read property 'emit' of undefined
+    at Socket.<anonymous> (/home/ken/WebstormProjects/VechAdmin/app.js:59:41)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at /home/ken/WebstormProjects/VechAdmin/node_modules/socket.io/lib/socket.js:513:12
+    at _combinedTickCallback (internal/process/next_tick.js:131:7)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+2018-12-18T20:59:45.890Z [Local] error: uncaughtException: Cannot read property 'emit' of undefined
+TypeError: Cannot read property 'emit' of undefined
+    at Socket.<anonymous> (/home/ken/WebstormProjects/VechAdmin/app.js:59:41)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at /home/ken/WebstormProjects/VechAdmin/node_modules/socket.io/lib/socket.js:513:12
+    at _combinedTickCallback (internal/process/next_tick.js:131:7)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+2018-12-18T21:03:26.243Z [Local] error: uncaughtException: Cannot read property 'emit' of undefined
+TypeError: Cannot read property 'emit' of undefined
+    at Socket.<anonymous> (/home/ken/WebstormProjects/VechAdmin/app.js:59:41)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at /home/ken/WebstormProjects/VechAdmin/node_modules/socket.io/lib/socket.js:513:12
+    at _combinedTickCallback (internal/process/next_tick.js:131:7)
+    at process._tickCallback (internal/process/next_tick.js:180:9)

@@ -23,8 +23,33 @@ morgan.token('date', function () {
 // create a write stream (in append mode)
 let accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
 
+let socketPool = [];
+/*start: Socket messaging*/
+io.sockets.on('connection', function (socket) {
 
-hotSocket.setSocket(io);
+    socket.on('user id', function (data) {
+        socketPool[data] = {
+            "socket": socket.id
+        };
+
+        /*console.log("socket size ", Object.keys(socketPool));
+        console.log("socket data " + socketPool);*/
+    });
+
+
+    socket.on('make request', function (data) {
+        console.log(`New guard request, User type = Owner, User id = ${data["user_id"]}, message = ${data["message"]}`);
+        io.sockets.connected[socketPool[data["user_id"]].socket].emit("new request", data["message"]);
+    });
+
+    socket.on('accept request', function (data) {
+        console.log(`Accepted guard request, User type = Guard, User id = ${data["user_id"]}, message = ${data["message"]}`);
+        io.sockets.connected[socketPool[data["user_id"]].socket].emit("request accepted", data["message"]);
+
+    });
+});
+/*end: Socket messaging*/
+//hotSocket.setSocket(io);
 
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000,
@@ -94,9 +119,9 @@ app.get('/', function (req, res) {
     res.redirect('/dashboard');
 });
 
-app.get('/logging', function(req, res){
+app.get('/logging', function (req, res) {
     logger.info("My awesome log", {label: "myLogger"});
-   res.send("Logging nicely");
+    res.send("Logging nicely");
 });
 
 
